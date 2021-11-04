@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@AllArgsConstructor
 public class ContatoService {
 
         private final ContatoRepository contatoRepository;

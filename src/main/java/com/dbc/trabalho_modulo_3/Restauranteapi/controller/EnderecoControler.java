@@ -1,6 +1,7 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 
 
+import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoCreateDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.EnderecoService;
@@ -35,9 +36,8 @@ public class EnderecoControler {
     })
     @PostMapping("/{idPessoa}")
     public EnderecoDTO create(@PathVariable("idPessoa") Integer idCliente,
-                              @Valid @RequestBody EnderecoEntity enderecoEntity) throws Exception {
-        log.info("Endereço será criado");
-        EnderecoDTO endereconew = enderecoService.update(idCliente, enderecoEntity);
+                              @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
+        EnderecoDTO endereconew = enderecoService.create(idCliente, enderecoCreateDTO);
         log.info("Endereço criado com sucesso");
         return endereconew;
     }
@@ -48,9 +48,9 @@ public class EnderecoControler {
         })
 
         @PutMapping("/{idEndereco}")
-        public EnderecoDTO update(@PathVariable("idEndereco") Integer idEndereco, @Valid @RequestBody EnderecoEntity enderecoEntityAtual) throws Exception {
+        public EnderecoDTO update(@PathVariable("idEndereco") Integer idEndereco, @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
             log.info("endereço está sendo atualizado");
-            EnderecoDTO endereconew =  enderecoService.update(idEndereco, enderecoEntityAtual);
+            EnderecoDTO endereconew =  enderecoService.update(idEndereco, enderecoCreateDTO);
             log.info("Endereço atualizado com sucesso");
 
             return endereconew;

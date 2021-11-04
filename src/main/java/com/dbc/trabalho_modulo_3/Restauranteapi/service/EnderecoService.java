@@ -37,7 +37,7 @@ public class EnderecoService {
         enderecoEntity1.setIdCliente(idCliente);
         return dto;
     }
-    public EnderecoDTO update(Integer idEndereco, @Valid EnderecoEntity enderecoCreateDTO) throws Exception {
+    public EnderecoDTO update(Integer idEndereco, @Valid EnderecoCreateDTO enderecoCreateDTO) throws Exception {
         clienteRepository.getById(enderecoCreateDTO.getIdCliente());
         EnderecoEntity enderecoEntity1 = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
         EnderecoEntity enderecoCriado = enderecoRepository.update(idEndereco, enderecoEntity1);

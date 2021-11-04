@@ -13,13 +13,9 @@ import javax.validation.constraints.NotNull;
 public class ProdutoCreateDTO {
 
     @NotNull
-    private double valorUnitario;
-    @NotBlank
+    private Double valorUnitario;
     @NotNull
     private String descrição;
     @NotNull
-    @Min(0)
-    @Max(1)
     private TipoProduto tipoProduto;
-
 }

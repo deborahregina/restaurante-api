@@ -1,5 +1,6 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 
+import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoCreateDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ContatoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
@@ -27,9 +28,9 @@ public class ContatoController {
             @ApiResponse( code = 400, message = "contato não encontrado")
     })
     @PostMapping("/{idCliente}")
-    public ContatoDTO create(@PathVariable("idCliente") Integer id, @RequestBody ContatoEntity contatoEntity) throws Exception {
+    public ContatoDTO create(@PathVariable("idCliente") Integer id, @RequestBody ContatoCreateDTO contatoCreateDTO) throws Exception {
         log.info("Contato criado");
-        ContatoDTO contatonew = contatoService.create(id, contatoEntity);
+        ContatoDTO contatonew = contatoService.create(id, contatoCreateDTO);
         log.info("Contatao criado com sucesso");
         return contatonew;
     }
@@ -59,9 +60,9 @@ public class ContatoController {
     })
     @PutMapping("/{idContato}")
     public ContatoDTO update(@PathVariable("idContato") Integer id,
-                             @RequestBody ContatoEntity contatoEntityAtualizar) throws Exception {
+                             @RequestBody ContatoCreateDTO contatoEntityAtualizar) throws Exception {
         log.info("Contato Atualizado");
-        ContatoDTO contatonew = contatoService.create(id, contatoEntityAtualizar);
+        ContatoDTO contatonew = contatoService.update(id, contatoEntityAtualizar);
         log.info("Contato atualizado com sucesso");
         return contatonew;
     }

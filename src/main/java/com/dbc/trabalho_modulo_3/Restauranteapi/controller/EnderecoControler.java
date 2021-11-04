@@ -7,6 +7,7 @@ import com.dbc.trabalho_modulo_3.Restauranteapi.service.EnderecoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -24,6 +25,13 @@ import java.util.List;
 public class EnderecoControler {
 
     private final EnderecoService enderecoService;
+
+    @GetMapping
+    @ApiOperation( value = "Lista todos os endereços")
+    @ApiResponses( value = {
+            @ApiResponse(code =200, message = "Endereço  listado com sucesso"),
+            @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
+    })
     public List<EnderecoDTO> list() {
         return enderecoService.list();
     }
@@ -31,7 +39,8 @@ public class EnderecoControler {
     @ApiOperation( value = "Criar um novo endereço por id")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Endereço  criado com sucesso"),
-            @ApiResponse( code = 400, message = "endereço não encontrado")
+            @ApiResponse( code = 400, message = "endereço não encontrado"),
+            @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
     @PostMapping("/{idPessoa}")
     public EnderecoDTO create(@PathVariable("idPessoa") Integer idCliente,
@@ -44,7 +53,8 @@ public class EnderecoControler {
         @ApiOperation( value = "Atualizar endereço por id")
         @ApiResponses( value = {
                 @ApiResponse(code =200, message = "Endereço  atualizado com sucesso"),
-                @ApiResponse( code = 400, message = "endereço não encontrado")
+                @ApiResponse( code = 400, message = "endereço não encontrado"),
+                @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
         })
 
         @PutMapping("/{idEndereco}")
@@ -58,7 +68,8 @@ public class EnderecoControler {
         @ApiOperation( value = "Deletar um  endereço por id")
         @ApiResponses( value = {
                 @ApiResponse(code =200, message = "Endereço  deletado com sucesso"),
-                @ApiResponse( code = 400, message = "endereço não encontrado")
+                @ApiResponse( code = 400, message = "endereço não encontrado"),
+                @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
         })
         @DeleteMapping("/{idEndereco}")
         public void delete(@PathVariable("idEndereco") Integer idEndereco) throws Exception {

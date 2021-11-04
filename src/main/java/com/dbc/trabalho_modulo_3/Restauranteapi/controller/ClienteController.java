@@ -25,6 +25,11 @@ public class ClienteController {
     private final ClienteService clienteService;
 
     @GetMapping
+    @ApiOperation(value = "Lista todos os clientes")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Cliente listado com sucesso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
+    })
     public List<ClienteDTO> list() {
         return clienteService.list();
     }

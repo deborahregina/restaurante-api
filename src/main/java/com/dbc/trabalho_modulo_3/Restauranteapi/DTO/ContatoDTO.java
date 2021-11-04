@@ -8,6 +8,6 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ContatoDTO extends ContatoCreateDTO{
     @NotNull
-    @ApiModelProperty(value = "Tipo de contato")
+    @ApiModelProperty(value = "id Contato")
     private Integer idContato;
 }

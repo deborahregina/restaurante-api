@@ -17,7 +17,7 @@ public class ContatoCreateDTO {
     private Integer IdCliente;
 
     @NotNull
-    @ApiModelProperty(value = "Tipo de contato")
+    @ApiModelProperty(value = "Tipo de contato 0 - Residencial  1 - Comercial")
     private TipoContato tipo;
 
     @NotEmpty

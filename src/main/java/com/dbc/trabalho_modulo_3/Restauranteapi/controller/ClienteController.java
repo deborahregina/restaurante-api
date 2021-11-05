@@ -41,8 +41,8 @@ public class ClienteController {
             @ApiResponse(code = 400, message = "Cliente não foi encontrado"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public List<ClienteDTO> listByID(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
-        return clienteService.listPorIdCliente(idCliente);
+    public ClienteDTO getById(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
+        return clienteService.getById(idCliente);
     }
 
     @PostMapping

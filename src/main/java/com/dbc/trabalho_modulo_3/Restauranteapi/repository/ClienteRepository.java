@@ -31,11 +31,6 @@ public class ClienteRepository {
         return listaClientes;
     }
 
-    public List<ClienteEntity> listByIdCliente(Integer id) {
-        return listaClientes.stream()
-                .filter(cliente -> cliente.getIdCliente().equals(id))
-                .collect(Collectors.toList());
-    }
 
     public ClienteEntity update(Integer id,
                                 ClienteEntity clienteEntityAtualizar) throws RegraDeNegocioException {

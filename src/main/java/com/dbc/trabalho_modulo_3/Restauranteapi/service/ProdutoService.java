@@ -34,8 +34,8 @@ public class ProdutoService {
         return produtoDTO;
     }
 
-    public ProdutoDTO listById(Integer idProduto) throws RegraDeNegocioException {
-        ProdutoEntity produto = produtoRepository.listById(idProduto);
+    public ProdutoDTO getById(Integer idProduto) throws RegraDeNegocioException {
+        ProdutoEntity produto = produtoRepository.getById(idProduto);
         ProdutoDTO produtoDTO = objectMapper.convertValue(produto,ProdutoDTO.class);
         return produtoDTO;
     }
@@ -52,4 +52,5 @@ public class ProdutoService {
     public void delete(Integer idProduto) throws Exception {
         produtoRepository.delete(idProduto);
     }
+
 }

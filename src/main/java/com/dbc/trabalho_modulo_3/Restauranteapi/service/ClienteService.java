@@ -35,11 +35,9 @@ public class ClienteService {
                 .collect(Collectors.toList());
     }
 
-    public List<ClienteDTO> listPorIdCliente(Integer idCliente) throws RegraDeNegocioException {
-        clienteRepository.getById(idCliente);
-        return clienteRepository.listByIdCliente(idCliente).stream()
-                .map(cliente -> objectMapper.convertValue(cliente, ClienteDTO.class))
-                .collect(Collectors.toList());
+    public ClienteDTO getById(Integer idCliente) throws RegraDeNegocioException {
+        ClienteDTO clienteByID = objectMapper.convertValue(clienteRepository.getById(idCliente),ClienteDTO.class);
+        return clienteByID;
     }
 
     public ClienteDTO update(Integer id,

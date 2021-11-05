@@ -34,7 +34,7 @@ public class ProdutoController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
     public ProdutoDTO listByID(@PathVariable("idProduto") Integer idProduto) throws RegraDeNegocioException {
-        return produtoService.listById(idProduto);
+        return produtoService.getById(idProduto);
     }
 
     @PostMapping

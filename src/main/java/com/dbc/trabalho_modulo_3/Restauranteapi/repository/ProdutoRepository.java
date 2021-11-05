@@ -34,10 +34,10 @@ public class ProdutoRepository {
         return produtoEntity;
     }
 
-    public ProdutoEntity listById(Integer idProduto) throws RegraDeNegocioException {
+    public ProdutoEntity getById(Integer idProduto) throws RegraDeNegocioException {
         return listaProdutoEntities.stream()
                 .filter(produto -> produto.getIdProduto().equals(idProduto)).findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Endereco não econtrado"));
+                .orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado"));
     }
 
     public ProdutoEntity update(Integer idProduto, ProdutoEntity produto) throws RegraDeNegocioException {
@@ -45,7 +45,7 @@ public class ProdutoRepository {
         ProdutoEntity produtoRecuperado = listaProdutoEntities.stream()
                 .filter(produtoAt -> produtoAt.getIdProduto().equals(idProduto))
                 .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Endereco não econtrado"));
+                .orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado"));
         produtoRecuperado.setTipoProduto(produto.getTipoProduto());
         produtoRecuperado.setDescrição(produto.getDescrição());
         produtoRecuperado.setValorUnitario(produto.getValorUnitario());

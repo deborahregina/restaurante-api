@@ -61,8 +61,10 @@
 
 
 
-               <h2><p style="color: #a4a4a6;"> <bold>Seu pedido foi:</bold></h2>
-                <h2><p><bold>${produtos}<bold></p></p></h2>
+               <h2><p style="color: #a4a4a6;"> <bold>Seu pedido foi:</bold></h2></p>
+                <h2><p style="color: #a4a4a6;" ><bold>${produtos}</bold></p></p></h2>
+                <br>
+                <h2><p style="color: #a4a4a6;" ><bold>Aproveite seu lanche e nos avalie!</bold></p></p></h2>
 
 
             </div>

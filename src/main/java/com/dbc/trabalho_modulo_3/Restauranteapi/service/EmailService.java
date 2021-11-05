@@ -37,12 +37,12 @@ public class EmailService {
     public void enviarEmailComTemplate(PedidoDTO pedidoDTO) throws MessagingException, IOException, TemplateException, RegraDeNegocioException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
 
-        String produtosDoPedido = "\n";
+        String produtosDoPedido = "";
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
         for(PedidoProdutoDTO pedidoProduto : pedidoDTO.getPedidoProduto()) {
             ProdutoDTO produto = produtoService.getById(pedidoProduto.getIdproduto());
-            produtosDoPedido += "\n"+produto.getDescrição() + "       |       Valor Unitário: " + produto.getValorUnitario() + "\n";
+            produtosDoPedido += "<br>"+ produto.getDescrição() + "                         |                         Valor Unitário: " + produto.getValorUnitario();
         }
 
         helper.setFrom(remetente);

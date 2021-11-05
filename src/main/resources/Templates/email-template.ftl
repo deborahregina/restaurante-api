@@ -49,7 +49,7 @@
     <tr>
         <td style="width: 10px;"></td>
         <td>
-            <img style="border-radius: 20%; display: block; margin: 20px auto;" src="file:///C:/Users/adriele.beatriz/Downloads/restaurante-imagem%20(2).png" alt=""></a>
+            <img style="border-radius: 20%; display: block; margin: 20px auto;" src="https://img.freepik.com/vetores-gratis/logotipo-do-restaurante-retro_23-2148474404.jpg?size=338&ext=jpg" alt=""></a>
         </td>
         <td style="width: 10px;"></td>
     </tr>
@@ -57,7 +57,7 @@
         <td style="width: 10px;"></td>
         <td>
             <div style="padding: 20px;">
-                <h1 style="color: #fdf9f0">Olá, ${nomeUsuario}  </h1>
+                <h1 style="color: #fdf9f0">Olá ${nomeUsuario}  </h1>
 
 
 

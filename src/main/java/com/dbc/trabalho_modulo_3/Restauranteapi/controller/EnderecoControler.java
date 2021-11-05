@@ -56,7 +56,6 @@ public class EnderecoControler {
                 @ApiResponse( code = 400, message = "endereço não encontrado"),
                 @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
         })
-
         @PutMapping("/{idEndereco}")
         public EnderecoDTO update(@PathVariable("idEndereco") Integer idEndereco, @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
             log.info("endereço está sendo atualizado");

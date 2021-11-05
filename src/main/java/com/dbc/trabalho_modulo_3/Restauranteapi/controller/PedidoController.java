@@ -27,7 +27,27 @@ public class PedidoController {
     }
 
     @GetMapping("/{idPedido}")
-    public PedidoDTO list(@PathVariable("idPedido") Integer idPedido) throws RegraDeNegocioException {
-        return pedidoService.list(idPedido);
+    public PedidoDTO getByID(@PathVariable("idPedido") Integer idPedido) throws RegraDeNegocioException {
+        return pedidoService.getByID(idPedido);
+    }
+
+    @DeleteMapping("/{idPedido}")
+    public void delete(@PathVariable("idPedido") Integer idPedido) throws RegraDeNegocioException {
+        pedidoService.delete(idPedido);
+    }
+
+    @GetMapping("/teste")
+    public List<PedidoDTO> list() throws RegraDeNegocioException {
+        return pedidoService.list();
+    }
+
+    @PutMapping("/{idPedido}")
+    public PedidoDTO update(@PathVariable("idPedido") Integer idPedido,@RequestBody @Valid PedidoCreateDTO pedidoCreateDTO ) throws RegraDeNegocioException {
+        return pedidoService.update(idPedido,pedidoCreateDTO);
+    }
+
+    @GetMapping
+    public  String retornaString() {
+        return System.getenv("EMAIL") + System.getenv("SENHA");
     }
 }

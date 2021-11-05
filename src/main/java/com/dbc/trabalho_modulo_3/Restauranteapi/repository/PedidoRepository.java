@@ -2,6 +2,7 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.repository;
 
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoProdutoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,8 +33,37 @@ public class PedidoRepository {
         PedidoEntity pedidoEntityRecuperado = listaPedidos.stream()
                 .filter(pedidoEntity -> pedidoEntity.getIdPedido().equals(idPedido))
                 .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Cliente não econtrado"));
+                .orElseThrow(() -> new RegraDeNegocioException("Pedido não econtrado"));
         return pedidoEntityRecuperado;
+    }
+
+    public void delete(Integer idPedido) throws RegraDeNegocioException {
+        PedidoEntity pedidoEntityRecuperado = listaPedidos.stream()
+                .filter(pedidoEntity -> pedidoEntity.getIdPedido().equals(idPedido))
+                .findFirst()
+                .orElseThrow(() -> new RegraDeNegocioException("Pedido não econtrado"));
+
+        listaPedidos.remove(pedidoEntityRecuperado);
+    }
+
+    public List<PedidoEntity> list() {
+        return listaPedidos;
+    }
+
+    public PedidoEntity update(Integer idPedido, PedidoEntity pedido) throws RegraDeNegocioException {
+
+        PedidoEntity pedidoEntityRecuperado = listaPedidos.stream()
+                .filter(pedidoEntity -> pedidoEntity.getIdPedido().equals(idPedido))
+                .findFirst()
+                .orElseThrow(() -> new RegraDeNegocioException("Pedido não econtrado"));
+
+        pedidoEntityRecuperado.setProdutosDoPedido(pedido.getProdutosDoPedido());
+        pedidoEntityRecuperado.setIdCliente(pedido.getIdCliente());
+        pedidoEntityRecuperado.setValorTotal(pedido.getValorTotal());
+        pedidoEntityRecuperado.setStatus(pedido.getStatus());
+
+        return pedidoEntityRecuperado;
+
     }
 
 }

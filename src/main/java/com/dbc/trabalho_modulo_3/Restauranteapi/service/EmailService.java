@@ -42,7 +42,7 @@ public class EmailService {
 
         for(PedidoProdutoDTO pedidoProduto : pedidoDTO.getPedidoProduto()) {
             ProdutoDTO produto = produtoService.getById(pedidoProduto.getIdproduto());
-            produtosDoPedido.concat("\n"+produto.getDescrição() + "       |       Valor Unitário: " + produto.getValorUnitario() + "\n");
+            produtosDoPedido += "\n"+produto.getDescrição() + "       |       Valor Unitário: " + produto.getValorUnitario() + "\n";
         }
 
         helper.setFrom(remetente);

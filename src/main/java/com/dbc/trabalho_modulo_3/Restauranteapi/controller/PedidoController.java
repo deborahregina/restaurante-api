@@ -61,7 +61,7 @@ public class PedidoController {
         pedidoService.delete(idPedido);
     }
 
-    @GetMapping("/teste")
+    @GetMapping
     @ApiOperation(value = "Lista todos os pedidos")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Pedidos Listado com sucesso"),
@@ -82,8 +82,5 @@ public class PedidoController {
         return pedidoService.update(idPedido,pedidoCreateDTO);
     }
 
-    @GetMapping
-    public  String retornaString() {
-        return System.getenv("EMAIL") + System.getenv("SENHA");
-    }
+
 }

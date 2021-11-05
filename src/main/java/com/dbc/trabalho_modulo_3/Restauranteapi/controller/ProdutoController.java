@@ -74,6 +74,12 @@ public class ProdutoController {
     }
 
     @DeleteMapping("/{idProduto}")
+    @ApiOperation(value = "Exclui o produto pelo id")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Produtos listados com sucesso"),
+            @ApiResponse(code = 400, message = "Produto não encontrado"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
+    })
     public void delete(@PathVariable("idProduto") Integer idProduto) throws Exception {
         produtoService.delete(idProduto);
     }

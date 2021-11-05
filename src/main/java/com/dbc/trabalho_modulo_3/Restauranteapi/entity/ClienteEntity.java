@@ -11,4 +11,5 @@ public class ClienteEntity {
     private Integer idCliente;
     private String cpf;
     private String nome;
+    private String email;
 }

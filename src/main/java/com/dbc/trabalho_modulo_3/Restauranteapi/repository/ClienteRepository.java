@@ -16,9 +16,9 @@ public class ClienteRepository {
     private AtomicInteger COUNTER = new AtomicInteger();
 
     public ClienteRepository() {
-        listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"01829548737","Camile lopes"));
-        listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"09839834758","Adriele"));
-        listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"45638736490","Debora"));
+        listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"01829548737","Camile lopes","deborah.regina@dbccompany.com.br"));
+        listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"09839834758","Adriele","${EMAIL}"));
+        listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"45638736490","Debora","${EMAIL}"));
     }
 
     public ClienteEntity create(ClienteEntity clienteEntity) throws RegraDeNegocioException {
@@ -40,6 +40,7 @@ public class ClienteRepository {
                 .orElseThrow(() -> new RegraDeNegocioException("Cliente não econtrado"));
         clienteEntityRecuperado.setCpf(clienteEntityAtualizar.getCpf());
         clienteEntityRecuperado.setNome(clienteEntityAtualizar.getNome());
+        clienteEntityRecuperado.setEmail(clienteEntityAtualizar.getEmail());
         return clienteEntityRecuperado;
     }
 

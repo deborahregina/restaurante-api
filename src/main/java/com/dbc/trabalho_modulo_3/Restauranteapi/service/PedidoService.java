@@ -10,9 +10,12 @@ import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoProdutoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,8 +29,9 @@ public class PedidoService {
     private final ObjectMapper objectMapper;
     private final ClienteService clienteService;
     private final ProdutoService produtoService;
+    private final EmailService emailService;
 
-    public PedidoDTO create (PedidoCreateDTO pedidoCreateDTO) throws RegraDeNegocioException {
+    public PedidoDTO create (PedidoCreateDTO pedidoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
 
         for(PedidoProdutoDTO pedidoProduto : pedidoCreateDTO.getPedidoProduto()) {
             produtoService.getById(pedidoProduto.getIdproduto());
@@ -56,6 +60,7 @@ public class PedidoService {
         pedidoDTO.setPedidoProduto(listaPedidosProdutoDTO);
         pedidoDTO.setValorTotal(calculavalorTotal(pedidoDTO));
 
+        emailService.enviarEmailComTemplate(pedidoDTO);
         return pedidoDTO;
     }
 
@@ -131,6 +136,7 @@ public class PedidoService {
         pedidoDTO.setPedidoProduto(listaPedidosProdutoDTO);
         pedidoDTO.setValorTotal(calculavalorTotal(pedidoDTO));
 
+
         return pedidoDTO;
     }
 
@@ -144,5 +150,6 @@ public class PedidoService {
         }
         return valorTotal;
     }
+
 
 }

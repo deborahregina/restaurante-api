@@ -45,7 +45,6 @@ public class ClienteService {
         ClienteEntity clienteEntity = objectMapper.convertValue(clienteCreateDTO, ClienteEntity.class);
         ClienteEntity cliente = clienteRepository.update(id, clienteEntity);
         ClienteDTO dto = objectMapper.convertValue(cliente, ClienteDTO.class);
-        //emailService.enviarEmailComTemplateNoUpdatePessoa(dto);
         return dto;
     }
 

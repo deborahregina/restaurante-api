@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 public class PedidoProdutoDTO {
 
     private Integer Idproduto;
+
     @Min(1)
     private Integer quantidade;
 

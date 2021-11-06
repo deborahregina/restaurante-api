@@ -16,6 +16,7 @@ public class PedidoEntity {
     private List<PedidoProdutoEntity> produtosDoPedido;
     private Double valorTotal;
     private String status;
+    private String data;
 
 
 }

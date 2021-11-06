@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Data
 public class PedidoDTO extends PedidoCreateDTO {
@@ -19,5 +20,7 @@ public class PedidoDTO extends PedidoCreateDTO {
     @ApiModelProperty(value = "Valor total do pedido")
     private BigDecimal valorTotal;
 
+    @ApiModelProperty(value = "Data de criação do pedido")
+    private String data;
 
 }

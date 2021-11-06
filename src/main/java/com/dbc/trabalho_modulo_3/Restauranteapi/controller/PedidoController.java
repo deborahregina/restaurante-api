@@ -83,14 +83,5 @@ public class PedidoController {
         return pedidoService.update(idPedido,pedidoCreateDTO);
     }
 
-    @GetMapping("/{idCliente}")
-    @ApiOperation(value = "Recupera último pedido do cliente")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Pedido Listado com sucesso"),
-            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
-    })
-    public PedidoDTO listaByCliente(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
-        return pedidoService.listaByPessoa(idCliente);
-    }
 
 }

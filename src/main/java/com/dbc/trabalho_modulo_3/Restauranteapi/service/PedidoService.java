@@ -12,12 +12,15 @@ import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +53,9 @@ public class PedidoService {
         PedidoEntity pedidoEntity = objectMapper.convertValue(pedidoCreateDTO, PedidoEntity.class);
         pedidoEntity.setProdutosDoPedido(listaPedidoProduto);
 
-
+        Date dataPedido = new Date();
+        String dateToStr = DateFormat.getInstance().format(dataPedido);
+        pedidoEntity.setData(dateToStr);
         PedidoEntity pedidoCriado = pedidoRepository.create(pedidoEntity);
         List<PedidoProdutoDTO> listaPedidosProdutoDTO = pedidoCriado.getProdutosDoPedido().stream()
                 .map(pedidoProduto -> objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class))
@@ -61,6 +66,7 @@ public class PedidoService {
         pedidoDTO.setPedidoProduto(listaPedidosProdutoDTO);
         pedidoDTO.setValorTotal(calculavalorTotal(pedidoDTO));
 
+
         //emailService.enviarEmailComTemplate(pedidoDTO);
         return pedidoDTO;
     }
@@ -68,7 +74,9 @@ public class PedidoService {
     public PedidoDTO getByID(Integer idPedido) throws RegraDeNegocioException {
 
         PedidoEntity pedidoEntity = pedidoRepository.getByID(idPedido);
+
         PedidoDTO pedidoDTO = objectMapper.convertValue(pedidoEntity, PedidoDTO.class);
+        pedidoDTO.setData(pedidoEntity.getData());
 
         List<PedidoProdutoDTO> listaPedidoProduto;
 
@@ -102,7 +110,6 @@ public class PedidoService {
 
             pedidoConvertido.setPedidoProduto(pedidosProduto);
             pedidoConvertido.setValorTotal(calculavalorTotal(pedidoConvertido));
-
             pedidoDTOList.add(pedidoConvertido);
         }
 
@@ -153,13 +160,7 @@ public class PedidoService {
         return valorTotal;
     }
 
-    public PedidoDTO listaByPessoa(Integer idPessoa) throws RegraDeNegocioException {
-        clienteService.getById(idPessoa);
-        PedidoEntity pedidoEntity = pedidoRepository.listaByPessoa(idPessoa);
-        PedidoDTO pedidoDTO = objectMapper.convertValue(pedidoEntity, PedidoDTO.class);
-        return pedidoDTO;
 
-    }
 
 
 }

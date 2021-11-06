@@ -56,6 +56,7 @@ public class PedidoService {
         Date dataPedido = new Date();
         String dateToStr = DateFormat.getInstance().format(dataPedido);
         pedidoEntity.setData(dateToStr);
+
         PedidoEntity pedidoCriado = pedidoRepository.create(pedidoEntity);
         List<PedidoProdutoDTO> listaPedidosProdutoDTO = pedidoCriado.getProdutosDoPedido().stream()
                 .map(pedidoProduto -> objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class))

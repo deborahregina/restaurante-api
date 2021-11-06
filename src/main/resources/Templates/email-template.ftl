@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Empiricus- Newsletter</title>
+    <title> Recebemos seu pedido</title>
     <style>
         * {
             margin: 0 0 10px;
@@ -60,8 +60,8 @@
                 <h1 style="color: #fdf9f0">Olá ${nomeUsuario}  </h1>
 
 
-
-               <h2><p style="color: #a4a4a6;"> <bold>Seu pedido foi:</bold></h2></p>
+                <h2><p style="color: #a4a4a6;"> <bold>Recebemos seu pedido em: ${data}</bold></h2></p><br>
+               <h2><p style="color: #a4a4a6;"> <bold>Itens do pedido:</bold></h2></p>
                 <h2><p style="color: #a4a4a6;" ><bold>${produtos}</bold></p></p></h2>
                 <br>
                 <h2><p style="color: #a4a4a6;" ><bold>Valor total: ${valorTotal}</bold></p></p></h2>

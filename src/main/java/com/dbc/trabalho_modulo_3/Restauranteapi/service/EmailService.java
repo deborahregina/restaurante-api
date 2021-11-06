@@ -19,6 +19,9 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +36,7 @@ public class EmailService {
     private final ClienteService clienteService;
     private final ProdutoService produtoService;
 
+    NumberFormat formatter = new DecimalFormat("#0.00");
 
     public void enviarEmailComTemplate(PedidoDTO pedidoDTO) throws MessagingException, IOException, TemplateException, RegraDeNegocioException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
@@ -42,7 +46,8 @@ public class EmailService {
 
         for(PedidoProdutoDTO pedidoProduto : pedidoDTO.getPedidoProduto()) {
             ProdutoDTO produto = produtoService.getById(pedidoProduto.getIdproduto());
-            produtosDoPedido += "<br>"+ produto.getDescrição() + "                         |                         Valor Unitário: " + produto.getValorUnitario();
+            produtosDoPedido += "<br>"+pedidoProduto.getQuantidade()+ "x "+ produto.getDescrição() + ":                                            " +
+                    "    R$ " + formatter.format(produto.getValorUnitario().multiply(BigDecimal.valueOf(pedidoProduto.getQuantidade())));
         }
 
         helper.setFrom(remetente);
@@ -53,7 +58,8 @@ public class EmailService {
         Map<String, Object> dados = new HashMap<>();
         dados.put("nomeUsuario", clienteService.getById(pedidoDTO.getIdCliente()).getNome());
         dados.put("produtos",produtosDoPedido);
-        dados.put("valorTotal", pedidoDTO.getValorTotal());
+        dados.put("valorTotal", "R$ " + formatter.format(pedidoDTO.getValorTotal()));
+        dados.put("data", pedidoDTO.getData());
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
 
         helper.setText(html, true);

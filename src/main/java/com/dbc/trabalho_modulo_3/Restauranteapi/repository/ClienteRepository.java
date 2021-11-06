@@ -18,7 +18,7 @@ public class ClienteRepository {
     public ClienteRepository() {
         listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"01829548737","Camile Lopes","email@gmail.com"));
         listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"09839834758","Adriele Beatriz","email@gmail.com"));
-        listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"45638736490","Deborah Silveira","deborah.regina@dbccompany.com.br"));
+        listaClientes.add(new ClienteEntity(COUNTER.incrementAndGet(),"45638736490","Deborah Silveira","email@dbccompany.com.br"));
     }
 
     public ClienteEntity create(ClienteEntity clienteEntity) throws RegraDeNegocioException {

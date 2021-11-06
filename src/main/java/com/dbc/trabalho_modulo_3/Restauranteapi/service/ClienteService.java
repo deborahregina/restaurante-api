@@ -51,7 +51,6 @@ public class ClienteService {
     public void delete(Integer id) throws RegraDeNegocioException {
         ClienteEntity clienteRecuperado = clienteRepository.getById(id);
         clienteRepository.delete(clienteRecuperado.getIdCliente());
-        //emailService.enviarEmailComTemplateNoDeletePessoa(clienteRecuperado);
     }
 
 

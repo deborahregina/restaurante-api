@@ -37,7 +37,7 @@ public class EnderecoControler {
         return enderecoService.list();
     }
 
-    @ApiOperation( value = "Criar um novo endereço por id")
+    @ApiOperation( value = "Criar um novo endereço por id de pessoa")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Endereço  criado com sucesso"),
             @ApiResponse( code = 400, message = "endereço não encontrado"),
@@ -46,9 +46,7 @@ public class EnderecoControler {
     @PostMapping("/{idPessoa}")
     public EnderecoDTO create(@PathVariable("idPessoa") Integer idCliente,
                               @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
-        EnderecoDTO endereconew = enderecoService.create(idCliente, enderecoCreateDTO);
-        log.info("Endereço criado com sucesso");
-        return endereconew;
+        return enderecoService.create(idCliente, enderecoCreateDTO);
     }
         @ApiOperation( value = "Atualizar endereço por id")
         @ApiResponses( value = {

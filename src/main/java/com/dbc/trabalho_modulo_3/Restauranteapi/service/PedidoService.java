@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -60,7 +61,7 @@ public class PedidoService {
         pedidoDTO.setPedidoProduto(listaPedidosProdutoDTO);
         pedidoDTO.setValorTotal(calculavalorTotal(pedidoDTO));
 
-        emailService.enviarEmailComTemplate(pedidoDTO);
+        //emailService.enviarEmailComTemplate(pedidoDTO);
         return pedidoDTO;
     }
 
@@ -140,15 +141,24 @@ public class PedidoService {
         return pedidoDTO;
     }
 
-    public Double calculavalorTotal(PedidoDTO pedidoDTO) throws RegraDeNegocioException {
-        Double valorTotal = 0.0;
+    public BigDecimal calculavalorTotal(PedidoDTO pedidoDTO) throws RegraDeNegocioException {
+        BigDecimal valorTotal = BigDecimal.ZERO;
         for(PedidoProdutoDTO pedidoProduto: pedidoDTO.getPedidoProduto()) {
             ProdutoDTO produto = produtoService.getById(pedidoProduto.getIdproduto());
-            Double valorUnitario = produto.getValorUnitario();
+            BigDecimal valorUnitario = produto.getValorUnitario();
             Integer quantidade = pedidoProduto.getQuantidade();
-            valorTotal += valorUnitario*quantidade;;
+            valorTotal = valorTotal.add(valorUnitario.multiply(BigDecimal.valueOf(quantidade)));
+
         }
         return valorTotal;
+    }
+
+    public PedidoDTO listaByPessoa(Integer idPessoa) throws RegraDeNegocioException {
+        clienteService.getById(idPessoa);
+        PedidoEntity pedidoEntity = pedidoRepository.listaByPessoa(idPessoa);
+        PedidoDTO pedidoDTO = objectMapper.convertValue(pedidoEntity, PedidoDTO.class);
+        return pedidoDTO;
+
     }
 
 

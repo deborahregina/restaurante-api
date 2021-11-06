@@ -48,7 +48,6 @@ public class ContatoRepository {
                 .filter(contatoEntity -> contatoEntity.getIdContato().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new RegraDeNegocioException("Contato não  foi encontrado"));
-        contatobackup.setIdCliente(contatoEntityAtualizar.getIdCliente());
         contatobackup.setIdContato(contatoEntityAtualizar.getIdContato());
         contatobackup.setTelefone(contatoEntityAtualizar.getTelefone());
         contatobackup.setDescricao(contatoEntityAtualizar.getDescricao());

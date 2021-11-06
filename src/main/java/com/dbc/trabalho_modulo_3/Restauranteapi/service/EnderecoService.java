@@ -30,15 +30,14 @@ public class EnderecoService {
 
     public EnderecoDTO create(Integer idCliente, EnderecoCreateDTO enderecoCreateDTO) throws RegraDeNegocioException {
         clienteRepository.getById(idCliente);
-        enderecoCreateDTO.setIdCliente(idCliente);
         EnderecoEntity enderecoEntity1 = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
+        enderecoEntity1.setIdCliente(idCliente);
         EnderecoEntity enderecoCriado = enderecoRepository.create(enderecoEntity1);
         EnderecoDTO dto = objectMapper.convertValue(enderecoCriado,EnderecoDTO.class);
         enderecoEntity1.setIdCliente(idCliente);
         return dto;
     }
     public EnderecoDTO update(Integer idEndereco, @Valid EnderecoCreateDTO enderecoCreateDTO) throws Exception {
-        clienteRepository.getById(enderecoCreateDTO.getIdCliente());
         EnderecoEntity enderecoEntity1 = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
         EnderecoEntity enderecoCriado = enderecoRepository.update(idEndereco, enderecoEntity1);
         EnderecoDTO dto = objectMapper.convertValue(enderecoCriado,EnderecoDTO.class);

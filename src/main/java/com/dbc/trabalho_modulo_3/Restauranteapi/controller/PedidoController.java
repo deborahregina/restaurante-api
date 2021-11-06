@@ -2,6 +2,7 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoCreateDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.PedidoService;
 import freemarker.template.TemplateException;
@@ -82,5 +83,14 @@ public class PedidoController {
         return pedidoService.update(idPedido,pedidoCreateDTO);
     }
 
+    @GetMapping("/{idCliente}")
+    @ApiOperation(value = "Recupera último pedido do cliente")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Pedido Listado com sucesso"),
+            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
+    })
+    public PedidoDTO listaByCliente(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
+        return pedidoService.listaByPessoa(idCliente);
+    }
 
 }

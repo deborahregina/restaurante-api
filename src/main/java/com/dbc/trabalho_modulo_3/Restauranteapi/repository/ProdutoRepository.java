@@ -18,9 +18,10 @@ public class ProdutoRepository {
     private AtomicInteger COUNTER = new AtomicInteger();
 
     public ProdutoRepository() {
-        listaProdutoEntities.add(new ProdutoEntity(COUNTER.incrementAndGet(), 10.50,"Heineken",TipoProduto.BEBIDA));
-        listaProdutoEntities.add(new ProdutoEntity(COUNTER.incrementAndGet(), 7.50,"Coca-cola",TipoProduto.BEBIDA));
-        listaProdutoEntities.add(new ProdutoEntity(COUNTER.incrementAndGet(), 20.50,"Brotinho chocolate",TipoProduto.COMIDA));
+        listaProdutoEntities.add(new ProdutoEntity(COUNTER.incrementAndGet(), 10.50,"Heineken Long Neck",TipoProduto.BEBIDA));
+        listaProdutoEntities.add(new ProdutoEntity(COUNTER.incrementAndGet(), 7.50,"Coca-cola 2L",TipoProduto.BEBIDA));
+        listaProdutoEntities.add(new ProdutoEntity(COUNTER.incrementAndGet(), 20.50,"Pizza brotinho de chocolate",TipoProduto.COMIDA));
+        listaProdutoEntities.add(new ProdutoEntity(COUNTER.incrementAndGet(), 20.50,"Pizza brotinho de calabresa",TipoProduto.COMIDA));
 
     }
 

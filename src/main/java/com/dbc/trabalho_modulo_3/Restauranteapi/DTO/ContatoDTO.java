@@ -10,4 +10,9 @@ public class ContatoDTO extends ContatoCreateDTO{
     @NotNull
     @ApiModelProperty(value = "id Contato")
     private Integer idContato;
+
+    @NotNull
+    @ApiModelProperty(value = "Id Pessoa")
+    private Integer IdCliente;
+
 }

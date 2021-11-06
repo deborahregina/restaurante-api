@@ -21,6 +21,7 @@ public class ContatoService {
         private final ContatoRepository contatoRepository;
         private final ClienteRepository clienteRepository;
         private final ObjectMapper objectMapper;
+        private final ClienteService clienteService;
 
 
 
@@ -41,8 +42,11 @@ public class ContatoService {
         }
 
         public ContatoDTO create(Integer idCliente, ContatoCreateDTO contatoCreateDTO) throws Exception {
+
+            clienteService.getById(idCliente);
+
             ContatoEntity contatoEntity1 = objectMapper.convertValue(contatoCreateDTO,ContatoEntity.class);
-            clienteRepository.getById(idCliente);
+            contatoEntity1.setIdCliente(idCliente);
             ContatoEntity contatoCriado = contatoRepository.create(idCliente, contatoEntity1);
             ContatoDTO contatoDTO = objectMapper.convertValue(contatoCriado,ContatoDTO.class);
             return contatoDTO;

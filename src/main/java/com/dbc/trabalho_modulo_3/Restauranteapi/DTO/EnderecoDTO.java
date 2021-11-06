@@ -14,4 +14,7 @@ public class EnderecoDTO extends EnderecoCreateDTO{
     @ApiModelProperty(value = "id Endereço")
     private Integer idEndereco;
 
+    @ApiModelProperty(value = "id Cliente")
+    private Integer idCliente;
+
 }

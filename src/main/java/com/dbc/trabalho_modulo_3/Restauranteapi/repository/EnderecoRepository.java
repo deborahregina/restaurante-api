@@ -16,8 +16,8 @@ public class EnderecoRepository {
     private AtomicInteger COUNTER2 = new AtomicInteger();
     public EnderecoRepository() {
        listaEnderecoEntities.add(new EnderecoEntity(COUNTER.incrementAndGet(), COUNTER2.incrementAndGet(), TipoEndereco.RESIDENCIAL,"Rua Amazonas ",15 ,"Barra","417205140"));
-        listaEnderecoEntities.add(new EnderecoEntity(COUNTER.incrementAndGet(), COUNTER2.incrementAndGet() ,TipoEndereco.RESIDENCIAL,"Rua das Margaridas ",10 ,"Cabula","417205020"));
-        listaEnderecoEntities.add(new EnderecoEntity(COUNTER.incrementAndGet(), COUNTER2.incrementAndGet(), TipoEndereco.RESIDENCIAL,"Rua do sossego ",11 ,"Ondina","417205025"));
+       listaEnderecoEntities.add(new EnderecoEntity(COUNTER.incrementAndGet(), COUNTER2.incrementAndGet() ,TipoEndereco.RESIDENCIAL,"Rua das Margaridas ",10 ,"Cabula","417205020"));
+       listaEnderecoEntities.add(new EnderecoEntity(COUNTER.incrementAndGet(), COUNTER2.incrementAndGet(), TipoEndereco.RESIDENCIAL,"Rua do sossego ",11 ,"Ondina","417205025"));
     }
 
     public List<EnderecoEntity> list() {
@@ -47,7 +47,6 @@ public class EnderecoRepository {
                 .filter(enderecoEntity -> enderecoEntity.getIdEndereco().equals(idEndereco))
                 .findFirst()
                 .orElseThrow(() -> new Exception("Endereço não  foi encontrado"));
-        enderecoEntitySearch.setIdCliente(enderecoEntityAtual.getIdCliente());
         enderecoEntitySearch.setTipo(enderecoEntityAtual.getTipo());
         enderecoEntitySearch.setLogradouro(enderecoEntityAtual.getLogradouro());
         enderecoEntitySearch.setNumero(enderecoEntityAtual.getNumero());

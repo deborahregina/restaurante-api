@@ -10,8 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 @Data
 public class EnderecoCreateDTO {
-    @ApiModelProperty(value = "id Cliente")
-    private Integer idCliente;
+
 
     @NotNull
     @ApiModelProperty(value = "Tipo Enderecço 0 - Residencial   1 - Comercial")

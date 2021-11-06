@@ -53,6 +53,7 @@ public class EmailService {
         Map<String, Object> dados = new HashMap<>();
         dados.put("nomeUsuario", clienteService.getById(pedidoDTO.getIdCliente()).getNome());
         dados.put("produtos",produtosDoPedido);
+        dados.put("valorTotal", pedidoDTO.getValorTotal());
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
 
         helper.setText(html, true);

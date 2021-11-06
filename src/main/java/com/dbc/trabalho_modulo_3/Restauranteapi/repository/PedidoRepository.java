@@ -66,4 +66,14 @@ public class PedidoRepository {
 
     }
 
+    public PedidoEntity listaByPessoa(Integer idPessoa) throws RegraDeNegocioException {
+
+        PedidoEntity pedidoEntityRecuperado = listaPedidos.stream()
+                .filter(pedidoEntity -> pedidoEntity.getIdCliente().equals(idPessoa))
+                .findFirst()
+                .orElseThrow(() -> new RegraDeNegocioException("Pedido não econtrado"));
+
+        return pedidoEntityRecuperado;
+    }
+
 }

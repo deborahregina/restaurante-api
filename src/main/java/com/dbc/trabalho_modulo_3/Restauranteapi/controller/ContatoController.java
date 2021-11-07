@@ -24,47 +24,48 @@ public class ContatoController {
 
     private final ContatoService contatoService;
 
+    @PostMapping("/{idCliente}")
     @ApiOperation( value = "Criar contato ")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Contato criado  sucesso"),
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    @PostMapping("/{idCliente}")
     public ContatoDTO create(@PathVariable("idCliente") Integer id, @RequestBody ContatoCreateDTO contatoCreateDTO) throws Exception {
         log.info("Contato criado");
         ContatoDTO contatonew = contatoService.create(id, contatoCreateDTO);
         log.info("Contatao criado com sucesso");
         return contatonew;
     }
+
+    @GetMapping
     @ApiOperation( value = "listar contatos ")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Contatos listados  sucesso"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    @GetMapping
     public List<ContatoDTO> list() {
         return contatoService.list();
     }
 
-    @ApiOperation( value = "listar contato por id da pessoa")
+    @GetMapping("/idCliente")
+    @ApiOperation( value = "listar contato por id do cliente")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Contato listado com sucesso"),
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    @GetMapping("/idCliente")
-    public List<ContatoDTO> listByIdCliente(@PathVariable("idCliente") Integer id) throws RegraDeNegocioException {
+    public List<ContatoDTO> listPorIdCliente(@PathVariable("idCliente") Integer id) throws RegraDeNegocioException {
         return contatoService.listPorIdCliente(id);
     }
 
-    @ApiOperation( value = "Atualizare contato por id")
+    @PutMapping("/{idContato}")
+    @ApiOperation( value = "Atualizar contato por id")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Contato atualizado com sucesso"),
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    @PutMapping("/{idContato}")
     public ContatoDTO update(@PathVariable("idContato") Integer id,
                              @RequestBody ContatoCreateDTO contatoEntityAtualizar) throws Exception {
         log.info("Contato Atualizado");
@@ -72,13 +73,14 @@ public class ContatoController {
         log.info("Contato atualizado com sucesso");
         return contatonew;
     }
+
+    @DeleteMapping("/{idContato}")
     @ApiOperation( value = "Deletar contato por id")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Contato deletado com sucesso"),
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    @DeleteMapping("/{idContato}")
     public void delete( @PathVariable("idContato") Integer id) throws Exception {
         log.info("contato será deletado");
         contatoService.delete(id);

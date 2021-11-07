@@ -66,7 +66,7 @@ public class ClienteController {
             @ApiResponse(code = 400, message = "Cliente não encontrado"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public ClienteDTO update(@PathVariable("idPessoa") Integer id,
+    public ClienteDTO update(@PathVariable("idCliente") Integer id,
                             @RequestBody @Valid ClienteCreateDTO clienteCreateDTO) throws RegraDeNegocioException {
         return clienteService.update(id, clienteCreateDTO);
     }
@@ -78,7 +78,7 @@ public class ClienteController {
             @ApiResponse(code = 400, message = "Cliente não encontrado"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public void delete(@PathVariable("idPessoa") Integer id) throws RegraDeNegocioException {
+    public void delete(@PathVariable("idCliente") Integer id) throws RegraDeNegocioException {
         clienteService.delete(id);
     }
 

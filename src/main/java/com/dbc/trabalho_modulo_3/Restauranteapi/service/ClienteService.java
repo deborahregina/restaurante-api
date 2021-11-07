@@ -40,8 +40,7 @@ public class ClienteService {
         return clienteByID;
     }
 
-    public ClienteDTO update(Integer id,
-                            ClienteCreateDTO clienteCreateDTO) throws RegraDeNegocioException {
+    public ClienteDTO update(Integer id, ClienteCreateDTO clienteCreateDTO) throws RegraDeNegocioException {
         ClienteEntity clienteEntity = objectMapper.convertValue(clienteCreateDTO, ClienteEntity.class);
         ClienteEntity cliente = clienteRepository.update(id, clienteEntity);
         ClienteDTO dto = objectMapper.convertValue(cliente, ClienteDTO.class);

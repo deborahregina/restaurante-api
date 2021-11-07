@@ -48,7 +48,7 @@ public class ContatoController {
         return contatoService.list();
     }
 
-    @GetMapping("/idCliente")
+    @GetMapping("/{idCliente}")
     @ApiOperation( value = "listar contato por id do cliente")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Contato listado com sucesso"),

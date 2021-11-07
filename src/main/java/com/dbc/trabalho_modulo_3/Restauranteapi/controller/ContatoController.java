@@ -53,7 +53,7 @@ public class ContatoController {
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    @GetMapping("/byidCliente")
+    @GetMapping("/{idCliente}")
     public List<ContatoDTO> listByIdCliente(@PathVariable("idCliente") Integer id) throws RegraDeNegocioException {
         return contatoService.listPorIdCliente(id);
     }

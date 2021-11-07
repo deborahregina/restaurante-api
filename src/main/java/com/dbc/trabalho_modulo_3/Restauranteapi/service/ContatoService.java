@@ -54,6 +54,8 @@ public class ContatoService {
         }
 
         public ContatoDTO update(Integer idContato, ContatoCreateDTO contatoCreateDTO) throws Exception {
+
+
             ContatoEntity contatoEntity = objectMapper.convertValue(contatoCreateDTO,ContatoEntity.class);
             ContatoEntity contatoEntity1 = contatoRepository.update(idContato, contatoEntity);
             ContatoDTO dto = objectMapper.convertValue(contatoEntity1,ContatoDTO.class);

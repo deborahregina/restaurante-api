@@ -1,7 +1,9 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.repository;
 
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ContatoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoEndereco;
+import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -47,6 +49,8 @@ public class EnderecoRepository {
                 .filter(enderecoEntity -> enderecoEntity.getIdEndereco().equals(idEndereco))
                 .findFirst()
                 .orElseThrow(() -> new Exception("Endereço não  foi encontrado"));
+        enderecoEntitySearch.setIdCliente(getById(idEndereco).getIdCliente());
+        enderecoEntitySearch.setIdEndereco(idEndereco);
         enderecoEntitySearch.setTipo(enderecoEntityAtual.getTipo());
         enderecoEntitySearch.setLogradouro(enderecoEntityAtual.getLogradouro());
         enderecoEntitySearch.setNumero(enderecoEntityAtual.getNumero());
@@ -63,4 +67,13 @@ public class EnderecoRepository {
         listaEnderecoEntities.remove(enderecobackup);
     }
 
+    public EnderecoEntity getById(Integer idEndereco) throws RegraDeNegocioException {
+
+        EnderecoEntity enderecoEntity = listaEnderecoEntities.stream()
+                .filter(enderecoEntity1 -> enderecoEntity1.getIdEndereco().equals(idEndereco))
+                .findFirst()
+                .orElseThrow(() -> new RegraDeNegocioException("Endereco não encontrado"));
+        return enderecoEntity;
+    }
 }
+

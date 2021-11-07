@@ -30,7 +30,7 @@ public class EnderecoCreateDTO {
 
     @NotEmpty
     @NotNull
-    @Size(max = 8,min = 8,message = "mais de 8 caracteres")
+    @Size(max = 8,min = 8,message = "Digite 8 caracteres")
     @ApiModelProperty(value = "cep")
     private String cep;
 }

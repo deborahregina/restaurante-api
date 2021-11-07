@@ -48,7 +48,10 @@ public class ContatoRepository {
                 .filter(contatoEntity -> contatoEntity.getIdContato().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new RegraDeNegocioException("Contato não  foi encontrado"));
-        contatobackup.setIdContato(contatoEntityAtualizar.getIdContato());
+
+        ContatoEntity contatoRec = getById(id);
+        contatoEntityAtualizar.setIdCliente(contatoRec.getIdCliente());
+        contatobackup.setIdContato(id);
         contatobackup.setTelefone(contatoEntityAtualizar.getTelefone());
         contatobackup.setDescricao(contatoEntityAtualizar.getDescricao());
         return contatobackup;
@@ -60,5 +63,14 @@ public class ContatoRepository {
                 .findFirst()
                 .orElseThrow(() -> new RegraDeNegocioException("Contato não encontrado"));
         listaContatoEntities.remove(contatobackup);
+    }
+
+    public ContatoEntity getById(Integer idContato) throws RegraDeNegocioException {
+
+        ContatoEntity contatoEntity = listaContatoEntities.stream()
+                .filter(contatonewEntity -> contatonewEntity.getIdContato().equals(idContato))
+                .findFirst()
+                .orElseThrow(() -> new RegraDeNegocioException("Contato não encontrado"));
+        return contatoEntity;
     }
 }

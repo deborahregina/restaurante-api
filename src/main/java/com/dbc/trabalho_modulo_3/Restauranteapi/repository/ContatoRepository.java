@@ -54,6 +54,7 @@ public class ContatoRepository {
         contatobackup.setIdContato(id);
         contatobackup.setTelefone(contatoEntityAtualizar.getTelefone());
         contatobackup.setDescricao(contatoEntityAtualizar.getDescricao());
+        contatobackup.setTipo(contatoEntityAtualizar.getTipo());
         return contatobackup;
     }
 

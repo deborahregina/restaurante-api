@@ -2,6 +2,8 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.entity;
 
 import lombok.*;
 
+import javax.persistence.*;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

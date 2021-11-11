@@ -8,28 +8,29 @@ import lombok.NoArgsConstructor;
 import java.util.Arrays;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public enum TipoEndereco {
     RESIDENCIAL(1),
     COMERCIAL(2);
 
     private Integer tipo;
 
+    @JsonValue
+    public int toValue() {
+        return ordinal();
+    }
+
+    TipoEndereco(Integer tipo) {
+        this.tipo = tipo;
+    }
+
     public Integer getTipo() {
         return tipo;
     }
 
-    public static TipoEndereco ofTipo(Integer tipo) {
+    public static TipoEndereco ofTipo(Integer tipo){
         return Arrays.stream(TipoEndereco.values())
                 .filter(tp -> tp.getTipo().equals(tipo))
                 .findFirst()
                 .get();
-
-    }
-
-    @JsonValue
-    public int toValue() {
-        return ordinal();
     }
 }

@@ -17,53 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
 @RequiredArgsConstructor
-public class PedidoRepository {
+public  interface  PedidoRepositoryextends JpaRepository<EnderecoEntity,Integer>  {
 
-    private List<PedidoEntity> listaPedidos = new ArrayList<>();
-    private AtomicInteger COUNTER = new AtomicInteger();
-
-
-    public PedidoEntity create(PedidoEntity pedidoEntity) {
-        pedidoEntity.setIdPedido(COUNTER.incrementAndGet());
-        listaPedidos.add(pedidoEntity);
-        return pedidoEntity;
-    }
-
-    public PedidoEntity getByID(Integer idPedido) throws RegraDeNegocioException {
-        PedidoEntity pedidoEntityRecuperado = listaPedidos.stream()
-                .filter(pedidoEntity -> pedidoEntity.getIdPedido().equals(idPedido))
-                .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Pedido não econtrado"));
-        return pedidoEntityRecuperado;
-    }
-
-    public void delete(Integer idPedido) throws RegraDeNegocioException {
-        PedidoEntity pedidoEntityRecuperado = listaPedidos.stream()
-                .filter(pedidoEntity -> pedidoEntity.getIdPedido().equals(idPedido))
-                .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Pedido não econtrado"));
-
-        listaPedidos.remove(pedidoEntityRecuperado);
-    }
-
-    public List<PedidoEntity> list() {
-        return listaPedidos;
-    }
-
-    public PedidoEntity update(Integer idPedido, PedidoEntity pedido) throws RegraDeNegocioException {
-
-        PedidoEntity pedidoEntityRecuperado = listaPedidos.stream()
-                .filter(pedidoEntity -> pedidoEntity.getIdPedido().equals(idPedido))
-                .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Pedido não econtrado"));
-
-        pedidoEntityRecuperado.setProdutosDoPedido(pedido.getProdutosDoPedido());
-        pedidoEntityRecuperado.setIdCliente(pedido.getIdCliente());
-        pedidoEntityRecuperado.setValorTotal(pedido.getValorTotal());
-        pedidoEntityRecuperado.setStatus(pedido.getStatus());
-
-        return pedidoEntityRecuperado;
-
-    }
 
 }

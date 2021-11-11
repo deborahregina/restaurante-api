@@ -6,17 +6,35 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
+@Entity(name = "ENDERECO_CLIENTE")
 public class EnderecoEntity {
-    private  Integer idCliente;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ENDERECO_CLIENTE")
+    @SequenceGenerator(name = "SEQ_ENDERECO_CLIENTE", sequenceName = "SEQ_ENDERECO_CLIENTE", allocationSize = 1)
+    @Column(name = "id_endereco")
     private Integer idEndereco;
-    private TipoEndereco tipo;
+
+
+    @Column(name = "tipo")
+    @Enumerated(EnumType.ORDINAL)
+    private TipoEndereco tipoEndereco;
+
+    @Column(name = "logradouro")
     private String logradouro;
-    private int numero;
-    private String bairro;
+
+    @Column(name = "numero")
+    private Integer numero;
+
+    @Column(name = "complemento")
+    private String complemento;
+
+    @Column(name = "cep")
     private String cep;
+
+    @Column (name = "Bairro")
+    private String bairro;
 
 
 }

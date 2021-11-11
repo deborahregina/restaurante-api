@@ -18,13 +18,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class EnderecoService {
+
     private final EnderecoRepository enderecoRepository;
     private final ClienteRepository clienteRepository;
     private final ObjectMapper objectMapper;
 
     public List<EnderecoDTO> list() {
         return enderecoRepository.list().stream()
-                .map(endereco -> objectMapper.convertValue(endereco,EnderecoDTO.class))
+                .map(endereco -> objectMapper.convertValue(endereco, EnderecoDTO.class))
                 .collect(Collectors.toList());
     }
 
@@ -33,14 +34,15 @@ public class EnderecoService {
         EnderecoEntity enderecoEntity1 = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
         enderecoEntity1.setIdCliente(idCliente);
         EnderecoEntity enderecoCriado = enderecoRepository.create(enderecoEntity1);
-        EnderecoDTO dto = objectMapper.convertValue(enderecoCriado,EnderecoDTO.class);
+        EnderecoDTO dto = objectMapper.convertValue(enderecoCriado, EnderecoDTO.class);
         enderecoEntity1.setIdCliente(idCliente);
         return dto;
     }
+
     public EnderecoDTO update(Integer idEndereco, @Valid EnderecoCreateDTO enderecoCreateDTO) throws Exception {
         EnderecoEntity enderecoEntity1 = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
         EnderecoEntity enderecoCriado = enderecoRepository.update(idEndereco, enderecoEntity1);
-        EnderecoDTO dto = objectMapper.convertValue(enderecoCriado,EnderecoDTO.class);
+        EnderecoDTO dto = objectMapper.convertValue(enderecoCriado, EnderecoDTO.class);
         return dto;
     }
 

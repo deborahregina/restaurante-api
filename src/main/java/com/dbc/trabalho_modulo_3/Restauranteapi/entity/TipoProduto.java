@@ -16,18 +16,11 @@ public enum TipoProduto {
     BEBIDA(2);
 
     private Integer tipo;
-
-
-
-    public static TipoProduto ofTipo(Integer tipo){
-        return Arrays.stream(TipoProduto.values())
+    public static TipoEndereco ofTipo(Integer tipo) {
+        return Arrays.stream(TipoEndereco.values())
                 .filter(tp -> tp.getTipo().equals(tipo))
                 .findFirst()
                 .get();
-    }
 
-    @JsonValue
-    public int toValue() {
-        return ordinal();
     }
 }

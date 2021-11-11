@@ -1,7 +1,6 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.repository;
 
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

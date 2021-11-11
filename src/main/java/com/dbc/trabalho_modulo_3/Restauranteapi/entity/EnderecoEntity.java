@@ -14,27 +14,27 @@ public class EnderecoEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ENDERECO_CLIENTE")
     @SequenceGenerator(name = "SEQ_ENDERECO_CLIENTE", sequenceName = "SEQ_ENDERECO_CLIENTE", allocationSize = 1)
-    @Column(name = "id_endereco")
+    @Column(name = "ID_ENDERECO")
     private Integer idEndereco;
 
 
-    @Column(name = "tipo")
+    @Column(name = "TIPO")
     @Enumerated(EnumType.ORDINAL)
     private TipoEndereco tipoEndereco;
 
-    @Column(name = "logradouro")
+    @Column(name = "LOGRADOURO")
     private String logradouro;
 
-    @Column(name = "numero")
+    @Column(name = "NUMERO")
     private Integer numero;
 
-    @Column(name = "complemento")
+    @Column(name = "COMPLEMENTO")
     private String complemento;
 
-    @Column(name = "cep")
+    @Column(name = "CEP")
     private String cep;
 
-    @Column (name = "Bairro")
+    @Column (name = "BAIRRO")
     private String bairro;
 
 

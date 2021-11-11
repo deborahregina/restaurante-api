@@ -68,7 +68,7 @@ public class PedidoService {
         pedidoDTO.setValorTotal(calculavalorTotal(pedidoDTO));
 
 
-        emailService.enviarEmailComTemplate(pedidoDTO);
+        //emailService.enviarEmailComTemplate(pedidoDTO);
         return pedidoDTO;
     }
 

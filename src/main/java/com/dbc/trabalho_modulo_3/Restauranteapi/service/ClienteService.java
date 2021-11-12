@@ -97,10 +97,11 @@ public class ClienteService {
         return entity;
     }
 
-    public ClienteDTO getByID(Integer id) {
+    public ClienteDTO getByID(Integer id) throws RegraDeNegocioException {
         ClienteEntity entity = clienteRepository.findById(id)
-                .orElseThrow(() -> RegraDeNegocioException("cliente não encontrado"));
-        ClienteDTO clienteDTO =
+                .orElseThrow(() -> new RegraDeNegocioException("cliente não encontrado"));
+        ClienteDTO clienteDTO = objectMapper.convertValue(entity,ClienteDTO.class);
+        clienteDTO.
     }
 
     public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws RegraDeNegocioException {

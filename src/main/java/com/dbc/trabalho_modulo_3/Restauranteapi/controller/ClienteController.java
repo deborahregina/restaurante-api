@@ -42,7 +42,7 @@ public class ClienteController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
     public ClienteDTO getById(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
-        return clienteService.getById(idCliente);
+        return clienteService.findById(idCliente);
     }
 
     @PostMapping

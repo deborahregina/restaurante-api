@@ -38,8 +38,6 @@ public class EnderecoEntity {
     @Column (name = "BAIRRO")
     private String bairro;
 
-    private Integer idCliente;
-
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")

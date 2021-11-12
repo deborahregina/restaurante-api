@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 @Entity(name = "PEDIDO_PRODUTO")
 public class PedidoProdutoEntity {
 
-    private Integer idPedidoProduto;
+
     private Integer Idproduto;
     private Integer Idpedido;
     private Integer quantidade;

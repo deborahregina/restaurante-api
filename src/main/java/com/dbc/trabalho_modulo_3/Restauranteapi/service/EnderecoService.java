@@ -1,8 +1,10 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
 
+import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoCreateDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ContatoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,41 +28,53 @@ public class EnderecoService {
         EnderecoEntity EnderecoEntity = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
         EnderecoEntity atualizado = enderecoRepository.save(EnderecoEntity);
         EnderecoDTO dto = objectMapper.convertValue(atualizado, EnderecoDTO.class);
+        dto.setIdCliente(atualizado.getClienteEntity().getIdCliente());
         return dto;
     }
 
     public List<EnderecoDTO> list(){
-        return enderecoRepository.findAll().stream()
-                .map(x -> objectMapper.convertValue(x, EnderecoDTO.class))
-                .collect(Collectors.toList());
+        List<EnderecoEntity> listaEnderecoEntity = enderecoRepository.findAll();
+        List<EnderecoDTO> listaEnderecoDTO = new ArrayList<>();
+
+        for(EnderecoEntity enderecoEntity : listaEnderecoEntity) {
+
+            EnderecoDTO enderecoDTO = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
+            enderecoDTO.setIdCliente(enderecoEntity.getClienteEntity().getIdCliente());
+
+            listaEnderecoDTO.add(enderecoDTO);
+        }
+
+        return listaEnderecoDTO;
     }
 
     public EnderecoDTO listByEndereco(Integer id) throws Exception{
-        EnderecoEntity EnderecoEntity = enderecoRepository.findById(id)
+        EnderecoEntity enderecoEntity = enderecoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Endereço não encontrado"));
-        EnderecoDTO dto = objectMapper.convertValue(EnderecoEntity, EnderecoDTO.class);
+        EnderecoDTO dto = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
+        dto.setIdCliente(enderecoEntity.getClienteEntity().getIdCliente());
         return dto;
     }
 
     public EnderecoDTO update(Integer idEndereco, EnderecoCreateDTO enderecoCreateDTO) throws Exception{
-        findById(idEndereco);
-        EnderecoEntity EnderecoEntity = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
-        EnderecoEntity.setIdEndereco(idEndereco);
-        EnderecoEntity update = enderecoRepository.save(EnderecoEntity);
+        EnderecoEntity enderecoEntity = findById(idEndereco);
+        EnderecoEntity endereco = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
+        endereco.setIdEndereco(idEndereco);
+        endereco.setClienteEntity(enderecoEntity.getClienteEntity());
+        EnderecoEntity update = enderecoRepository.save(endereco);
         EnderecoDTO dto = objectMapper.convertValue(update, EnderecoDTO.class);
+        dto.setIdCliente(update.getClienteEntity().getIdCliente());
         return dto;
     }
 
-    private EnderecoDTO findById(Integer id) throws RegraDeNegocioException{
-        EnderecoEntity EnderecoEntity = enderecoRepository.findById(id)
+    private EnderecoEntity findById(Integer id) throws RegraDeNegocioException{
+        EnderecoEntity enderecoEntity = enderecoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Endereço não encontrado"));
-        EnderecoDTO dto = objectMapper.convertValue(EnderecoEntity, EnderecoDTO.class);
-        return dto;
+
+        return enderecoEntity;
     }
 
     public void delete(Integer id) throws Exception {
-        EnderecoDTO dto = findById(id);
-        EnderecoEntity  EnderecoEntity= objectMapper.convertValue(dto, EnderecoEntity.class);
-        enderecoRepository.delete(EnderecoEntity);
+        EnderecoEntity entity = findById(id);
+        enderecoRepository.delete(entity);
     }
 }

@@ -1,6 +1,7 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,7 +22,13 @@ public class PedidoEntity {
     private Integer idPedido;
     @Column(name = "ID_CLIENTE")
     private Integer idCliente;
+
+    @JsonIgnore
+    @ManyToMany
+
+    @JoinTable(name = "PEDIDO_PRODUTO", joinColumns = @JoinColumn(name = "id_pedido"), inverseJoinColumns = @JoinColumn(name = "id_produto"))
     private List<PedidoProdutoEntity> produtosDoPedido;
+
     @Column(name = "VALOR_TOTAL")
     private Double valorTotal;
     @Column(name = "STATUS")

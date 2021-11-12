@@ -42,7 +42,7 @@ public class PedidoService {
         }
 
         Integer idCliente = pedidoCreateDTO.getIdCliente();
-        clienteService.getById(idCliente);
+        clienteService.findById(idCliente);
 
 
 
@@ -126,7 +126,7 @@ public class PedidoService {
         }
 
         Integer idCliente = pedidoCreateDTO.getIdCliente();
-        clienteService.getById(idCliente);
+        clienteService.findById(idCliente);
 
         List<PedidoProdutoEntity> listaPedidoProduto = pedidoCreateDTO.getPedidoProduto().stream()
                 .map(pedidoProduto -> objectMapper.convertValue(pedidoProduto, PedidoProdutoEntity.class))

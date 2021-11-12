@@ -1,9 +1,11 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -24,5 +26,8 @@ public class ProdutoEntity {
     @Column(name = "TIPO_PRODUTO ")
     private TipoProduto tipoProduto;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "produtosDoPedido")
+    private List<PedidoProdutoEntity> pedidoProdutoEntityList;
 
 }

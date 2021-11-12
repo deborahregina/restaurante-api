@@ -97,6 +97,12 @@ public class ClienteService {
         return entity;
     }
 
+    public ClienteDTO getByID(Integer id) {
+        ClienteEntity entity = clienteRepository.findById(id)
+                .orElseThrow(() -> RegraDeNegocioException("cliente não encontrado"));
+        ClienteDTO clienteDTO =
+    }
+
     public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws RegraDeNegocioException {
         ClienteEntity clienteEntity = findById(idCliente);
 

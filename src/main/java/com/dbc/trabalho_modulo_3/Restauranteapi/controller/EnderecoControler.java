@@ -4,6 +4,7 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoCreateDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.EnderecoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -27,14 +28,14 @@ public class EnderecoControler {
 
     private final EnderecoService enderecoService;
 
-    @GetMapping
-    @ApiOperation( value = "Lista todos os endereços")
+    @GetMapping("/idEndereco")
+    @ApiOperation( value = "Lista enderecos por id ou todos os enderecos")
     @ApiResponses( value = {
-            @ApiResponse(code =200, message = "Endereço  listado com sucesso"),
+            @ApiResponse(code =200, message = "Endereço(s)  listado(s) com sucesso"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public List<EnderecoDTO> list() {
-        return enderecoService.list();
+    public List<EnderecoDTO> list(@RequestParam(required = false) Integer idEndereco) throws RegraDeNegocioException {
+        return enderecoService.list(idEndereco);
     }
 
     @ApiOperation( value = "Criar um novo endereço por id de pessoa")
@@ -48,6 +49,8 @@ public class EnderecoControler {
                               @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
         return enderecoService.create(idCliente, enderecoCreateDTO);
     }
+
+
         @ApiOperation( value = "Atualizar endereço por id")
         @ApiResponses( value = {
                 @ApiResponse(code =200, message = "Endereço  atualizado com sucesso"),
@@ -55,13 +58,12 @@ public class EnderecoControler {
                 @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
         })
         @PutMapping("/{idEndereco}")
-        public EnderecoDTO update(@PathVariable("idEndereco") Integer idEndereco, @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
-            log.info("endereço está sendo atualizado");
-            EnderecoDTO endereconew =  enderecoService.update(idEndereco, enderecoCreateDTO);
-            log.info("Endereço atualizado com sucesso");
-
-            return endereconew;
+        public EnderecoDTO update(@PathVariable("idEndereco") Integer idEndereco,
+                                  @Valid @RequestBody EnderecoCreateDTO enderecoCreateDTO) throws Exception {
+            return enderecoService.update(idEndereco, enderecoCreateDTO);
         }
+
+
         @ApiOperation( value = "Deletar um  endereço por id")
         @ApiResponses( value = {
                 @ApiResponse(code =200, message = "Endereço  deletado com sucesso"),

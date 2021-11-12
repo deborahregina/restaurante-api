@@ -51,12 +51,12 @@ public class EmailService {
         }
 
         helper.setFrom(remetente);
-        helper.setTo(clienteService.getById(pedidoDTO.getIdCliente()).getEmail());
+        helper.setTo(clienteService.getByID(pedidoDTO.getIdCliente()).getEmail());
         helper.setSubject("Informações do novo pedido");
 
         Template template = configuration.getTemplate("email-template.ftl");
         Map<String, Object> dados = new HashMap<>();
-        dados.put("nomeUsuario", clienteService.getById(pedidoDTO.getIdCliente()).getNome());
+        dados.put("nomeUsuario", clienteService.getByID(pedidoDTO.getIdCliente()).getNome());
         dados.put("produtos",produtosDoPedido);
         dados.put("valorTotal", "R$ " + formatter.format(pedidoDTO.getValorTotal()));
         dados.put("data", pedidoDTO.getData());

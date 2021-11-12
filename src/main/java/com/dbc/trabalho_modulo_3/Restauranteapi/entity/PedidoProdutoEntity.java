@@ -1,8 +1,9 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Data
 @AllArgsConstructor
@@ -11,8 +12,13 @@ import javax.persistence.Entity;
 public class PedidoProdutoEntity {
 
 
-    private Integer Idproduto;
+    @Column(name = "ID_PRODUTO")
+    private Integer idProduto;
+
+    @Column(name = "ID_PEDIDO")
     private Integer Idpedido;
+
+    @Column(name = "QUANTIDADE")
     private Integer quantidade;
 
 }

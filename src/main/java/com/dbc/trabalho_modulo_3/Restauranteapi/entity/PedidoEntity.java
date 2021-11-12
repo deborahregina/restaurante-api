@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,11 +33,11 @@ public class PedidoEntity {
     private List<PedidoProdutoEntity> produtosDoPedido;
 
     @Column(name = "VALOR_TOTAL")
-    private Double valorTotal;
+    private BigDecimal valorTotal;
     @Column(name = "STATUS")
     private String status;
     @Column(name = "DATA")
-    private String data;
+    private LocalDateTime data;
 
 
 }

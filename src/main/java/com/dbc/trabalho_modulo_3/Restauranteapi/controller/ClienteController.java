@@ -24,14 +24,14 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-    @GetMapping
-    @ApiOperation(value = "Lista todos os clientes")
+    @GetMapping("/idCliente")
+    @ApiOperation(value = "Lista cliente por id ou todos os clientes")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Cliente listado com sucesso"),
+            @ApiResponse(code = 200, message = "Cliente(s) listado(s) com sucesso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public List<ClienteDTO> list() {
-        return clienteService.list();
+    public List<ClienteDTO> list(@RequestParam(required = false) Integer idCliente) throws RegraDeNegocioException {
+        return clienteService.list(idCliente);
     }
 
     @GetMapping("/{idCliente}")
@@ -42,7 +42,7 @@ public class ClienteController {
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
     public ClienteDTO getById(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
-        return clienteService.findById(idCliente);
+        return clienteService.getByID(idCliente);
     }
 
     @PostMapping
@@ -52,11 +52,8 @@ public class ClienteController {
             @ApiResponse(code = 400, message = "Dados do cliente inconsistentes"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public ClienteDTO create(@RequestBody @Valid ClienteCreateDTO clienteCreateDTO) throws RegraDeNegocioException {
-        log.info("iniciando criação do cliente");
-        ClienteDTO clienteEntityCriado = clienteService.create(clienteCreateDTO);
-        log.info("pessoa criada com sucesso!");
-        return clienteEntityCriado;
+    public ClienteDTO create(@RequestBody @Valid ClienteCreateDTO clienteCreateDTO) throws Exception {
+        return clienteService.create(clienteCreateDTO);
     }
 
     @PutMapping("/{idCliente}")

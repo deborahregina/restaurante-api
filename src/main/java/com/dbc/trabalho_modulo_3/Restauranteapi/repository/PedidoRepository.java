@@ -21,4 +21,5 @@ import java.util.concurrent.atomic.AtomicInteger;
 public interface PedidoRepository extends JpaRepository<PedidoEntity, Integer> {
 
 
+
 }

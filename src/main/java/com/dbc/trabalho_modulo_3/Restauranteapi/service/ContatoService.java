@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,20 +37,29 @@ public class ContatoService {
         return dto;
     }
 
-    public List<ContatoDTO> list(){
+    public List<ContatoDTO> list(Integer idContato) throws RegraDeNegocioException {
 
-        List<ContatoEntity> listaContatosEntity = contatoRepository.findAll();
         List<ContatoDTO> listaContatosDTO = new ArrayList<>();
 
-        for(ContatoEntity contatoEntity : listaContatosEntity) {
+        if(idContato == null) {
+            List<ContatoEntity> listaContatosEntity = contatoRepository.findAll();
+            for(ContatoEntity contatoEntity : listaContatosEntity) {
 
-            ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
-            contatoDTO.setIdCliente(contatoEntity.getClienteEntity().getIdCliente());
+                ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
+                contatoDTO.setIdCliente(contatoEntity.getClienteEntity().getIdCliente());
 
-            listaContatosDTO.add(contatoDTO);
+                listaContatosDTO.add(contatoDTO);
+            }
+            return listaContatosDTO;
         }
 
+        ContatoEntity contatoEntity = findById(idContato);
+        ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity,ContatoDTO.class);
+        contatoDTO.setIdCliente(contatoEntity.getClienteEntity().getIdCliente());
+        listaContatosDTO.add(contatoDTO);
+
         return listaContatosDTO;
+
     }
 
     private ContatoEntity findById(Integer id) throws RegraDeNegocioException {
@@ -82,6 +92,19 @@ public class ContatoService {
     public void delete(Integer id) throws RegraDeNegocioException {
         ContatoEntity contato = findById(id);
         contatoRepository.delete(contato);
+    }
+
+    public Set<ContatoDTO> getByIdCliente(Integer idCliente) throws RegraDeNegocioException {
+        ClienteEntity cliente = clienteRepository.findById(idCliente)
+                .orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado"));
+
+        Set<ContatoDTO> listaDTO = cliente.getContatos().stream().map(contatoEntity -> {
+            ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
+            contatoDTO.setIdCliente(idCliente);
+            return contatoDTO;
+        }).collect(Collectors.toSet());
+
+        return listaDTO;
     }
 }
 

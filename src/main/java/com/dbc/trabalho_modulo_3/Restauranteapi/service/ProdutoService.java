@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,10 +21,21 @@ public class ProdutoService {
     private final ObjectMapper objectMapper;
     private final ProdutoRepository produtoRepository;
 
-    public List<ProdutoDTO> list() {
-        return produtoRepository.findAll().stream()
-                .map(produto -> objectMapper.convertValue(produto, ProdutoDTO.class))
-                .collect(Collectors.toList());
+    public List<ProdutoDTO> list(Integer idProduto) throws RegraDeNegocioException {
+
+        if (idProduto == null) {
+            return produtoRepository.findAll().stream()
+                    .map(produto -> objectMapper.convertValue(produto, ProdutoDTO.class))
+                    .collect(Collectors.toList());
+        }
+
+        List<ProdutoDTO> listaProduto = new ArrayList<>();
+
+        ProdutoEntity produtoEntity = produtoRepository.findById(idProduto).orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado!"));
+        ProdutoDTO produtoDTO = objectMapper.convertValue(produtoEntity, ProdutoDTO.class);
+        listaProduto.add(produtoDTO);
+        return listaProduto;
+
     }
 
     public ProdutoDTO create(ProdutoCreateDTO produtoCreateDTO) throws RegraDeNegocioException {

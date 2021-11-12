@@ -29,30 +29,20 @@ public class PedidoController {
 
     private final PedidoService pedidoService;
 
-    @PostMapping
+    @PostMapping("/idCliente")
     @ApiOperation(value = "Cria novo pedido")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Pedido criado com sucesso"),
             @ApiResponse(code = 400, message = "Cliente não foi encontrado"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public PedidoDTO create(@RequestBody @Valid PedidoCreateDTO pedidoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
-        return pedidoService.create(pedidoCreateDTO);
+    public PedidoDTO create(@RequestParam("idCliente") Integer idCliente, @RequestBody @Valid PedidoCreateDTO pedidoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+        return pedidoService.create(idCliente, pedidoCreateDTO);
     }
 
-    @GetMapping("/{idPedido}")
-    @ApiOperation(value = "Lista os pedidos pelo id")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Pedido Listado com sucesso"),
-            @ApiResponse(code = 400, message = "Pedido não foi encontrado"),
-            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
-    })
-    public PedidoDTO getByID(@PathVariable("idPedido") Integer idPedido) throws RegraDeNegocioException {
-        return pedidoService.getByID(idPedido);
-    }
 
     @DeleteMapping("/{idPedido}")
-    @ApiOperation(value = "Exclui os pedidos pelo id")
+    @ApiOperation(value = "Exclui os pedidos por id pedido")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Pedido excluido com sucesso"),
             @ApiResponse(code = 400, message = "Pedido não foi encontrado"),
@@ -62,14 +52,14 @@ public class PedidoController {
         pedidoService.delete(idPedido);
     }
 
-    @GetMapping
-    @ApiOperation(value = "Lista todos os pedidos")
+    @GetMapping("/idPedido")
+    @ApiOperation(value = "Lista pedido por id ou todos os pedidos")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Pedidos Listado com sucesso"),
+            @ApiResponse(code = 200, message = "Pedido(s) Listado(s) com sucesso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public List<PedidoDTO> list() throws RegraDeNegocioException {
-        return pedidoService.list();
+    public List<PedidoDTO> list(@RequestParam(required = false) Integer idPedido) throws RegraDeNegocioException {
+        return pedidoService.list(idPedido);
     }
 
     @PutMapping("/{idPedido}")
@@ -79,7 +69,7 @@ public class PedidoController {
             @ApiResponse(code = 400, message = "Pedido não foi encontrado"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public PedidoDTO update(@PathVariable("idPedido") Integer idPedido,@RequestBody @Valid PedidoCreateDTO pedidoCreateDTO ) throws RegraDeNegocioException {
+    public PedidoDTO update(@PathVariable("idPedido") Integer idPedido, @RequestBody @Valid PedidoCreateDTO pedidoCreateDTO) throws RegraDeNegocioException {
         return pedidoService.update(idPedido,pedidoCreateDTO);
     }
 

@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @Slf4j
@@ -31,21 +32,21 @@ public class ContatoController {
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public ContatoDTO create(@PathVariable("idCliente") Integer id, @RequestBody ContatoCreateDTO contatoCreateDTO) throws Exception {
+    public ContatoDTO create(@PathVariable("idCliente") Integer idCliente, @RequestBody ContatoCreateDTO contatoCreateDTO) throws Exception {
         log.info("Contato criado");
-        ContatoDTO contatonew = contatoService.create(id, contatoCreateDTO);
+        ContatoDTO contatonew = contatoService.create(idCliente, contatoCreateDTO);
         log.info("Contatao criado com sucesso");
         return contatonew;
     }
 
-    @GetMapping
-    @ApiOperation( value = "listar contatos ")
+    @GetMapping("/idContato")
+    @ApiOperation( value = "Lista contatos por id ou todos os contatos")
     @ApiResponses( value = {
-            @ApiResponse(code =200, message = "Contatos listados  sucesso"),
+            @ApiResponse(code =200, message = "Contato(s) listado(s) com sucesso"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public List<ContatoDTO> list() {
-        return contatoService.list();
+    public List<ContatoDTO> list(@RequestParam(required = false) Integer idContato) throws RegraDeNegocioException {
+        return contatoService.list(idContato);
     }
 
     @GetMapping("/{idCliente}")
@@ -55,36 +56,31 @@ public class ContatoController {
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public List<ContatoDTO> listPorIdCliente(@PathVariable("idCliente") Integer id) throws RegraDeNegocioException {
-        return contatoService.listPorIdCliente(id);
+    public Set<ContatoDTO> listPorIdCliente(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
+        return contatoService.getByIdCliente(idCliente);
     }
 
     @PutMapping("/{idContato}")
-    @ApiOperation( value = "Atualizar contato por id")
+    @ApiOperation( value = "Atualizar contato por id do contato")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Contato atualizado com sucesso"),
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public ContatoDTO update(@PathVariable("idContato") Integer id,
-                             @RequestBody ContatoCreateDTO contatoEntityAtualizar) throws Exception {
-        log.info("Contato Atualizado");
-        ContatoDTO contatonew = contatoService.update(id, contatoEntityAtualizar);
-        log.info("Contato atualizado com sucesso");
-        return contatonew;
+    public ContatoDTO update(@PathVariable("idContato") Integer idContato,
+                             @RequestBody ContatoCreateDTO contatoCreateDTO) throws Exception {
+        return contatoService.update(idContato, contatoCreateDTO);
     }
 
     @DeleteMapping("/{idContato}")
-    @ApiOperation( value = "Deletar contato por id")
+    @ApiOperation( value = "Deletar contato por id do contato")
     @ApiResponses( value = {
             @ApiResponse(code =200, message = "Contato deletado com sucesso"),
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public void delete( @PathVariable("idContato") Integer id) throws Exception {
-        log.info("contato será deletado");
-        contatoService.delete(id);
-        log.info("Contato deletado com sucesso");
+    public void delete(@PathVariable("idContato") Integer idContato) throws Exception {
+        contatoService.delete(idContato);
     }
 }
 

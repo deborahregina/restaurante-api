@@ -8,8 +8,6 @@ import java.util.List;
 @Data
 public class PedidoCreateDTO {
 
-    @ApiModelProperty(value = "id Cliente")
-    private Integer idCliente;
 
     @ApiModelProperty(value = "Lista de Id de produtos e quantidade")
     private List<PedidoProdutoDTO> pedidoProduto;

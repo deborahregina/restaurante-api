@@ -26,16 +26,6 @@ public class ProdutoController {
 
     private final ProdutoService produtoService;
 
-    @GetMapping("/{idProduto}")
-    @ApiOperation(value = "Lista produto por ID")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Produto listado com sucesso"),
-            @ApiResponse(code = 400, message = "Produto não foi encontrado"),
-            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
-    })
-    public ProdutoDTO listByID(@PathVariable("idProduto") Integer idProduto) throws RegraDeNegocioException {
-        return produtoService.getById(idProduto);
-    }
 
     @PostMapping
     @ApiOperation(value = "Cria novo produto")
@@ -58,19 +48,18 @@ public class ProdutoController {
     })
     public ProdutoDTO update(@PathVariable("idProduto") Integer idProduto,
                               @Valid @RequestBody ProdutoCreateDTO produtoCreateDTO) throws Exception {
-        ProdutoDTO produtoDTO = produtoService.update(idProduto, produtoCreateDTO);
-        return produtoDTO;
+        return produtoService.update(idProduto, produtoCreateDTO);
     }
 
 
-    @GetMapping
-    @ApiOperation(value = "Lista produtos")
+    @GetMapping("/idProduto")
+    @ApiOperation(value = "Lista os clientes pelo id do cliente")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Produtos listados com sucesso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public List<ProdutoDTO> list() {
-        return produtoService.list();
+    public List<ProdutoDTO> list(@RequestParam(required = false) Integer idProduto) throws RegraDeNegocioException {
+        return produtoService.list(idProduto);
     }
 
     @DeleteMapping("/{idProduto}")

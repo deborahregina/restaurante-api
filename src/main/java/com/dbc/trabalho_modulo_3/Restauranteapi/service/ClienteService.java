@@ -34,11 +34,11 @@ public class ClienteService {
 
     public List<ClienteDTO> list(Integer idCliente) throws RegraDeNegocioException {
 
-        List<ClienteEntity> listaClienteEntity = clienteRepository.findAll();
-
         List<ClienteDTO> clienteDTOS = new ArrayList<>();
 
         if (idCliente == null) {
+
+            List<ClienteEntity> listaClienteEntity = clienteRepository.findAll();
             for (ClienteEntity cliente : listaClienteEntity) {
 
                 ClienteDTO clienteDTO = objectMapper.convertValue(cliente, ClienteDTO.class);
@@ -72,7 +72,7 @@ public class ClienteService {
                 .map(contatoEntity -> {
 
                     ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
-                    contatoDTO.setIdCliente(clienteDTO.getIdCliente());
+                    contatoDTO.setIdCliente(cliente.getIdCliente());
                     return contatoDTO;
 
                 }).collect(Collectors.toList()));
@@ -82,7 +82,7 @@ public class ClienteService {
                 .map(enderecoEntity -> {
 
                     EnderecoDTO enderecoDTO = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
-                    enderecoDTO.setIdCliente(clienteDTO.getIdCliente());
+                    enderecoDTO.setIdCliente(cliente.getIdCliente());
                     return enderecoDTO;
                 }).collect(Collectors.toList()));
 
@@ -91,7 +91,7 @@ public class ClienteService {
     }
 
 
-    public ClienteEntity findById(Integer id) throws RegraDeNegocioException {
+    private ClienteEntity findById(Integer id) throws RegraDeNegocioException {
         ClienteEntity entity = clienteRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("cliente não encontrado"));
         return entity;
@@ -101,7 +101,30 @@ public class ClienteService {
         ClienteEntity entity = clienteRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("cliente não encontrado"));
         ClienteDTO clienteDTO = objectMapper.convertValue(entity,ClienteDTO.class);
-        clienteDTO.
+        List<EnderecoDTO> listaEnd = entity.getEnderecos().stream()
+                .map(enderecoEntity -> {
+                    EnderecoDTO endDTO = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
+                    endDTO.setIdCliente(enderecoEntity.getClienteEntity().getIdCliente());
+                    return endDTO;
+                }).collect(Collectors.toList());
+
+        List<ContatoDTO> listaCont = entity.getContatos().stream()
+                .map(contatoEntity -> {
+                    ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
+                    contatoDTO.setIdCliente(contatoEntity.getClienteEntity().getIdCliente());
+                    return contatoDTO;
+                }).collect(Collectors.toList());
+
+
+        clienteDTO.setEnderecos(listaEnd);
+        clienteDTO.setContatos(listaCont);
+        return clienteDTO;
+    }
+
+    public ClienteDTO findByID(Integer idCliente) throws RegraDeNegocioException {
+        ClienteEntity cliente = clienteRepository.findById(idCliente).orElseThrow(()-> new RegraDeNegocioException("Cliente não encontrado"));
+        ClienteDTO clienteDTO = objectMapper.convertValue(cliente, ClienteDTO.class);
+        return clienteDTO;
     }
 
     public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws RegraDeNegocioException {

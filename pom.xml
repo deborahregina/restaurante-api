@@ -107,12 +107,13 @@
 			<artifactId>ojdbc8</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-	</dependencies>
 
 	<dependency>
 		<groupId>org.postgresql</groupId>
 		<artifactId>postgresql</artifactId>
 	</dependency>
+
+	</dependencies>
 
 	<dependencyManagement>
 		<dependencies>

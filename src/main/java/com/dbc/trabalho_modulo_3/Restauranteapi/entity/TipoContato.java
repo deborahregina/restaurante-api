@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.util.Arrays;
 
-@Getter
+
 public enum TipoContato {
     RESIDENCIAL(1),
     COMERCIAL(2);

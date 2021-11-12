@@ -49,16 +49,6 @@ public class ContatoController {
         return contatoService.list(idContato);
     }
 
-    @GetMapping("/{idCliente}")
-    @ApiOperation( value = "listar contato por id do cliente")
-    @ApiResponses( value = {
-            @ApiResponse(code =200, message = "Contato listado com sucesso"),
-            @ApiResponse( code = 400, message = "contato não encontrado"),
-            @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
-    })
-    public Set<ContatoDTO> listPorIdCliente(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
-        return contatoService.getByIdCliente(idCliente);
-    }
 
     @PutMapping("/{idContato}")
     @ApiOperation( value = "Atualizar contato por id do contato")

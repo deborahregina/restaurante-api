@@ -1,13 +1,13 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "CLIENTE")
@@ -23,16 +23,21 @@ public class ClienteEntity {
     @Column(name = "CPF")
     private String cpf;
 
-
     @Column(name = "NOME")
     private String nome;
 
     @Column(name = "EMAIL")
     private String email;
 
-    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ContatoEntity> contatos;
 
-    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
+    @JsonIgnore
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<EnderecoEntity> enderecos;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PedidoEntity> pedidos;
 }

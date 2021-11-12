@@ -1,6 +1,7 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
 import com.dbc.trabalho_modulo_3.Restauranteapi.*;
+import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoProdutoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ProdutoDTO;
@@ -33,12 +34,11 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String remetente;
     private final Configuration configuration;
-    private final ClienteService clienteService;
     private final ProdutoService produtoService;
 
     NumberFormat formatter = new DecimalFormat("#0.00");
 
-    public void enviarEmailComTemplate(PedidoDTO pedidoDTO) throws MessagingException, IOException, TemplateException, RegraDeNegocioException {
+    public void enviarEmailComTemplate(PedidoDTO pedidoDTO, ClienteDTO cliente) throws MessagingException, IOException, TemplateException, RegraDeNegocioException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
 
         String produtosDoPedido = "";
@@ -46,17 +46,17 @@ public class EmailService {
 
         for(PedidoProdutoDTO pedidoProduto : pedidoDTO.getPedidoProduto()) {
             ProdutoDTO produto = produtoService.getById(pedidoProduto.getIdproduto());
-            produtosDoPedido += "<br>"+pedidoProduto.getQuantidade()+ "x "+ produto.getDescrição() + ":                                            " +
+            produtosDoPedido += "<br>"+pedidoProduto.getQuantidade()+ "x "+ produto.getDescricao() + ":                                            " +
                     "    R$ " + formatter.format(produto.getValorUnitario().multiply(BigDecimal.valueOf(pedidoProduto.getQuantidade())));
         }
 
         helper.setFrom(remetente);
-        helper.setTo(clienteService.getByID(pedidoDTO.getIdCliente()).getEmail());
+        helper.setTo(cliente.getEmail());
         helper.setSubject("Informações do novo pedido");
 
         Template template = configuration.getTemplate("email-template.ftl");
         Map<String, Object> dados = new HashMap<>();
-        dados.put("nomeUsuario", clienteService.getByID(pedidoDTO.getIdCliente()).getNome());
+        dados.put("nomeUsuario", cliente.getNome());
         dados.put("produtos",produtosDoPedido);
         dados.put("valorTotal", "R$ " + formatter.format(pedidoDTO.getValorTotal()));
         dados.put("data", pedidoDTO.getData());

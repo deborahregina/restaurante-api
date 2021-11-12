@@ -8,9 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.Arrays;
 
 
-@Getter
 @AllArgsConstructor
-@NoArgsConstructor
 public enum TipoProduto {
 
     COMIDA(1),

@@ -5,7 +5,8 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "CONTATO_CLIENTE")
@@ -14,7 +15,7 @@ public class ContatoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTATO_SEQ")
-    @SequenceGenerator(name = "CONTATO_SEQ", sequenceName = "seq_contato", allocationSize = 1)
+    @SequenceGenerator(name = "CONTATO_SEQ", sequenceName = "SEQ_CONTATO_CLIENTE", allocationSize = 1)
     @Column(name = "id_contato")
     private Integer idContato;
 

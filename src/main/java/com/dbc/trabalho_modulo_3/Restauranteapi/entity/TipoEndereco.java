@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Arrays;
 
-@Getter
+
 public enum TipoEndereco {
     RESIDENCIAL(1),
     COMERCIAL(2);

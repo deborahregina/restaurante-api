@@ -15,14 +15,14 @@ public class ContatoCreateDTO {
 
     @NotNull
     @ApiModelProperty(value = "Tipo de contato 0 - Residencial  1 - Comercial")
-    private TipoContato tipo;
+    private TipoContato tipoContato;
 
 
     @NotEmpty
     @NotNull
     @Size(max = 13, message = "numero maior que 13 digitos")
     @ApiModelProperty(value = "Número telefone")
-    private String telefone;
+    private String numero;
 
     @NotEmpty
     @NotNull

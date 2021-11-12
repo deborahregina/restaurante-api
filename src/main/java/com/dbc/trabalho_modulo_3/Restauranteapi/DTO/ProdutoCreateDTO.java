@@ -19,7 +19,7 @@ public class ProdutoCreateDTO {
     private BigDecimal valorUnitario;
     @NotNull
     @ApiModelProperty(value = "Descrição do produto")
-    private String descrição;
+    private String descricao;
     @NotNull
     @ApiModelProperty(value = "Tipo de produto   0- Bebida  1- Comida")
     private TipoProduto tipoProduto;

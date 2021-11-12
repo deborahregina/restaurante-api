@@ -25,10 +25,11 @@ import java.util.stream.Collectors;
 public class EnderecoService {
     private final EnderecoRepository enderecoRepository;
     private final ObjectMapper objectMapper;
-    private final ClienteService clienteService;
+    private final ClienteRepository clienteRepository;
 
     public EnderecoDTO create(Integer idCliente, EnderecoCreateDTO enderecoCreateDTO) throws RegraDeNegocioException {
-        ClienteDTO clienteDTO = clienteService.findByID(idCliente);
+        ClienteEntity cliente = clienteRepository.findById(idCliente).orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado!"));
+        ClienteDTO clienteDTO = objectMapper.convertValue(cliente, ClienteDTO.class);
         EnderecoEntity enderecoEntity = objectMapper.convertValue(enderecoCreateDTO, EnderecoEntity.class);
         enderecoEntity.setClienteEntity(objectMapper.convertValue(clienteDTO, ClienteEntity.class));
         EnderecoEntity atualizado = enderecoRepository.save(enderecoEntity);

@@ -34,16 +34,6 @@ public class ClienteController {
         return clienteService.list(idCliente);
     }
 
-    @GetMapping("/{idCliente}")
-    @ApiOperation(value = "Lista os clientes pelo id do cliente")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Cliente listado com sucesso"),
-            @ApiResponse(code = 400, message = "Cliente não foi encontrado"),
-            @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
-    })
-    public ClienteDTO getById(@PathVariable("idCliente") Integer idCliente) throws RegraDeNegocioException {
-        return clienteService.getByID(idCliente);
-    }
 
     @PostMapping
     @ApiOperation(value = "Cria novo cliente")
@@ -75,7 +65,7 @@ public class ClienteController {
             @ApiResponse(code = 400, message = "Cliente não encontrado"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public void delete(@PathVariable("idCliente") Integer id) throws RegraDeNegocioException {
+    public void delete(@PathVariable("idCliente") Integer id) throws Exception {
         clienteService.delete(id);
     }
 

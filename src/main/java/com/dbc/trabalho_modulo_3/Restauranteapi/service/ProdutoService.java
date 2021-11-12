@@ -3,6 +3,7 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ProdutoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ProdutoRepository;
@@ -54,6 +55,7 @@ public class ProdutoService {
 
     public ProdutoDTO update(Integer idProduto, ProdutoCreateDTO produtoCreateDTO) throws RegraDeNegocioException {
 
+        produtoRepository.findById(idProduto).orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado"));
         ProdutoEntity produtoEntity = objectMapper.convertValue(produtoCreateDTO, ProdutoEntity.class);
         produtoEntity.setIdProduto(idProduto);
         ProdutoEntity produtoAtualizado = produtoRepository.save(produtoEntity);

@@ -1,13 +1,12 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoCreateDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoProdutoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ProdutoDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoProdutoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
+import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
@@ -33,9 +32,9 @@ public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
     private final ObjectMapper objectMapper;
-    private final ClienteService clienteService;
     private final ProdutoService produtoService;
     private final EmailService emailService;
+    private final ClienteRepository clienteRepository;
 
     public PedidoDTO create (Integer idCliente, PedidoCreateDTO pedidoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
 
@@ -43,7 +42,7 @@ public class PedidoService {
             produtoService.getById(pedidoProduto.getIdproduto());
         }
 
-        clienteService.findByID(idCliente);
+        ClienteEntity cliente = clienteRepository.getById(idCliente);
 
         List<PedidoProdutoEntity> listaPedidoProduto = pedidoCreateDTO.getPedidoProduto().stream()
                 .map(pedidoProduto -> objectMapper.convertValue(pedidoProduto, PedidoProdutoEntity.class))
@@ -51,7 +50,7 @@ public class PedidoService {
 
         PedidoEntity pedidoEntity = objectMapper.convertValue(pedidoCreateDTO, PedidoEntity.class);
         pedidoEntity.setProdutosDoPedido(listaPedidoProduto);
-
+        pedidoEntity.setClienteEntity(cliente);
 
         LocalDateTime dataPedido = LocalDateTime.now();
         pedidoEntity.setData(dataPedido);
@@ -70,8 +69,11 @@ public class PedidoService {
         pedidoDTO.setPedidoProduto(listaPedidosProdutoDTO);
         pedidoDTO.setValorTotal(pedidoCriado.getValorTotal());
         pedidoDTO.setData(dataPedido);
+        pedidoDTO.setIdCliente(idCliente);
 
-        emailService.enviarEmailComTemplate(pedidoDTO);
+        ClienteDTO clienteEmail = objectMapper.convertValue(cliente, ClienteDTO.class);
+
+        emailService.enviarEmailComTemplate(pedidoDTO,clienteEmail);
         return pedidoDTO;
     }
 
@@ -151,9 +153,10 @@ public class PedidoService {
                 .map(pedidoProduto -> objectMapper.convertValue(pedidoProduto, PedidoProdutoEntity.class))
                 .collect(Collectors.toList());
 
+
         PedidoEntity pedidoEntity = objectMapper.convertValue(pedidoCreateDTO, PedidoEntity.class);
         pedidoEntity.setProdutosDoPedido(listaPedidoProduto);
-        pedidoEntity.setIdCliente(pedidoRecuperado.getIdCliente());
+        pedidoEntity.setClienteEntity(pedidoRecuperado.getClienteEntity());
         LocalDateTime dataPedido = LocalDateTime.now();
         pedidoEntity.setData(dataPedido);
         pedidoEntity.setValorTotal(calculavalorTotal(pedidoEntity));
@@ -175,7 +178,7 @@ public class PedidoService {
     private BigDecimal calculavalorTotal(PedidoEntity pedidoEntity) throws RegraDeNegocioException {
         BigDecimal valorTotal = BigDecimal.ZERO;
         for(PedidoProdutoEntity pedidoProdutos: pedidoEntity.getProdutosDoPedido()) {
-            ProdutoDTO produto = produtoService.getById(pedidoProdutos.getIdProduto());
+            ProdutoDTO produto = produtoService.getById(pedidoProdutos.getPedidoProdutoPk().getIdProduto());
             BigDecimal valorUnitario = produto.getValorUnitario();
             Integer quantidade = pedidoProdutos.getQuantidade();
             valorTotal = valorTotal.add(valorUnitario.multiply(BigDecimal.valueOf(quantidade)));
@@ -185,6 +188,11 @@ public class PedidoService {
     }
 
 
+    public List<PedidoEntity> listaPedidoEntityPorIdCliente(Integer idCliente) {
 
+        return pedidoRepository.findAll().stream().
+                filter(pedido -> pedido.getClienteEntity().getIdCliente().equals(idCliente)).collect(Collectors.toList());
+
+    }
 
 }

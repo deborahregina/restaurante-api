@@ -1,12 +1,12 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteCreateDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
+import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ContatoRepository;
+import com.dbc.trabalho_modulo_3.Restauranteapi.repository.EnderecoRepository;
+import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +24,10 @@ public class ClienteService {
 
     private final ClienteRepository clienteRepository;
     private final ObjectMapper objectMapper;
+    private final PedidoService pedidoService;
+    private final ContatoRepository contatoRepository;
+    private final PedidoRepository pedidoRepository;
+    private final EnderecoRepository enderecoRepository;
 
     public ClienteDTO create(ClienteCreateDTO clienteCreateDTO) throws Exception {
 
@@ -100,7 +105,7 @@ public class ClienteService {
     public ClienteDTO getByID(Integer id) throws RegraDeNegocioException {
         ClienteEntity entity = clienteRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("cliente não encontrado"));
-        ClienteDTO clienteDTO = objectMapper.convertValue(entity,ClienteDTO.class);
+        ClienteDTO clienteDTO = objectMapper.convertValue(entity, ClienteDTO.class);
         List<EnderecoDTO> listaEnd = entity.getEnderecos().stream()
                 .map(enderecoEntity -> {
                     EnderecoDTO endDTO = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
@@ -122,7 +127,7 @@ public class ClienteService {
     }
 
     public ClienteDTO findByID(Integer idCliente) throws RegraDeNegocioException {
-        ClienteEntity cliente = clienteRepository.findById(idCliente).orElseThrow(()-> new RegraDeNegocioException("Cliente não encontrado"));
+        ClienteEntity cliente = clienteRepository.findById(idCliente).orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado"));
         ClienteDTO clienteDTO = objectMapper.convertValue(cliente, ClienteDTO.class);
         return clienteDTO;
     }
@@ -132,11 +137,13 @@ public class ClienteService {
 
         ClienteEntity clienteConvertido = objectMapper.convertValue(clienteCreateDTO, ClienteEntity.class);
 
-        clienteConvertido.setContatos(clienteEntity.getContatos());
-        clienteConvertido.setEnderecos(clienteEntity.getEnderecos());
+
         ClienteEntity clienteAtualizado = clienteRepository.save(clienteConvertido);
 
         ClienteDTO clienteAtualizadoDTO = objectMapper.convertValue(clienteAtualizado, ClienteDTO.class);
+
+        clienteConvertido.setContatos(clienteEntity.getContatos());
+        clienteConvertido.setEnderecos(clienteEntity.getEnderecos());
 
         clienteAtualizadoDTO.setEnderecos(clienteAtualizado.getEnderecos().stream().map(
                 enderecoEntity -> {
@@ -157,9 +164,14 @@ public class ClienteService {
         return clienteAtualizadoDTO;
     }
 
-    public void delete(Integer idCliente) throws RegraDeNegocioException {
+    public void delete(Integer idCliente) throws Exception {
+
         ClienteEntity cliente = findById(idCliente);
         clienteRepository.delete(cliente);
+
     }
 
+
 }
+
+

@@ -12,31 +12,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "PEDIDO")
 public class PedidoEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PEDIDO")
     @SequenceGenerator(name = "SEQ_PEDIDO", sequenceName = "SEQ_PEDIDO", allocationSize = 1)
-
     @Column(name = "ID_PEDIDO")
     private Integer idPedido;
-    @Column(name = "ID_CLIENTE")
-    private Integer idCliente;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
+    private ClienteEntity clienteEntity;
 
-    @JoinTable(name = "PEDIDO_PRODUTO", joinColumns = @JoinColumn(name = "id_pedido"), inverseJoinColumns = @JoinColumn(name = "id_produto"))
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_pedido", referencedColumnName = "id_pedido")
     private List<PedidoProdutoEntity> produtosDoPedido;
 
     @Column(name = "VALOR_TOTAL")
     private BigDecimal valorTotal;
     @Column(name = "STATUS")
     private String status;
-    @Column(name = "DATA")
+    @Column(name = "DATA_PEDIDO")
     private LocalDateTime data;
 
 

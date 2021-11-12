@@ -7,7 +7,8 @@ import lombok.*;
 import javax.persistence.*;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "PRODUTO")
@@ -19,18 +20,15 @@ public class ProdutoEntity {
     @Column(name = "ID_PRODUTO")
     private Integer idProduto;
 
-    @Column(name = "PRECO")
+    @Column(name = "VALOR_UNITARIO")
     private Double valorUnitario;
 
-    @Column(name = "NOME")
+    @Column(name = "DESCRICAO")
     private String descricao;
 
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "TIPO_PRODUTO")
     private TipoProduto tipoProduto;
 
-    @JsonIgnore
-    @ManyToMany(mappedBy = "produtosDoPedido")
-    private List<PedidoProdutoEntity> pedidoProdutoEntityList;
 
 }

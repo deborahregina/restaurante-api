@@ -1,5 +1,6 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,5 +38,11 @@ public class EnderecoEntity {
     @Column (name = "BAIRRO")
     private String bairro;
 
+    private Integer idCliente;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente", referencedColumnName = "id_cliente")
+    private ClienteEntity clienteEntity;
 
 }

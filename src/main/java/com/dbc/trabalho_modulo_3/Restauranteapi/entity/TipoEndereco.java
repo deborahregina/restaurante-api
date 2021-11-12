@@ -14,10 +14,6 @@ public enum TipoEndereco {
 
     private Integer tipo;
 
-    @JsonValue
-    public int toValue() {
-        return ordinal();
-    }
 
     TipoEndereco(Integer tipo) {
         this.tipo = tipo;

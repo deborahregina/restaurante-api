@@ -12,6 +12,7 @@ import java.util.Arrays;
 @AllArgsConstructor
 @NoArgsConstructor
 public enum TipoProduto {
+
     COMIDA(1),
     BEBIDA(2);
 

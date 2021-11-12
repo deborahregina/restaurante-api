@@ -14,11 +14,6 @@ public enum TipoContato {
     COMERCIAL(2);
 
 
-    @JsonValue
-    public int toValue() {
-        return ordinal();
-    }
-
     private Integer tipo;
 
     TipoContato(Integer tipo) {

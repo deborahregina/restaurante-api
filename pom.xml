@@ -109,6 +109,11 @@
 		</dependency>
 	</dependencies>
 
+	<dependency>
+		<groupId>org.postgresql</groupId>
+		<artifactId>postgresql</artifactId>
+	</dependency>
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>

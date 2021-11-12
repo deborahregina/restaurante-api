@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -28,4 +29,10 @@ public class ClienteEntity {
 
     @Column(name = "EMAIL")
     private String email;
+
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
+    private Set<ContatoEntity> contatos;
+
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
+    private Set<EnderecoEntity> enderecos;
 }

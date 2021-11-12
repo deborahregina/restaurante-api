@@ -21,7 +21,7 @@ public class ProdutoService {
     private final ProdutoRepository produtoRepository;
 
     public List<ProdutoDTO> list() {
-        return produtoRepository.list().stream()
+        return produtoRepository.findAll().stream()
                 .map(produto -> objectMapper.convertValue(produto, ProdutoDTO.class))
                 .collect(Collectors.toList());
     }
@@ -29,7 +29,7 @@ public class ProdutoService {
     public ProdutoDTO create(ProdutoCreateDTO produtoCreateDTO) throws RegraDeNegocioException {
 
         ProdutoEntity produtoEntity = objectMapper.convertValue(produtoCreateDTO, ProdutoEntity.class);
-        ProdutoEntity produtoCriado = produtoRepository.create(produtoEntity);
+        ProdutoEntity produtoCriado = produtoRepository.save(produtoEntity);
         ProdutoDTO produtoDTO = objectMapper.convertValue(produtoCriado,ProdutoDTO.class);
         return produtoDTO;
     }
@@ -43,14 +43,16 @@ public class ProdutoService {
     public ProdutoDTO update(Integer idProduto, ProdutoCreateDTO produtoCreateDTO) throws RegraDeNegocioException {
 
         ProdutoEntity produtoEntity = objectMapper.convertValue(produtoCreateDTO, ProdutoEntity.class);
-        ProdutoEntity produtoAtualizado = produtoRepository.update(idProduto,produtoEntity);
+        produtoEntity.setIdProduto(idProduto);
+        ProdutoEntity produtoAtualizado = produtoRepository.save(produtoEntity);
         ProdutoDTO produtoDTO = objectMapper.convertValue(produtoAtualizado, ProdutoDTO.class);
 
         return produtoDTO;
     }
 
     public void delete(Integer idProduto) throws Exception {
-        produtoRepository.delete(idProduto);
+        ProdutoEntity produtoEntity = produtoRepository.findById(idProduto).orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado!"));
+        produtoRepository.delete(produtoEntity);
     }
 
 }

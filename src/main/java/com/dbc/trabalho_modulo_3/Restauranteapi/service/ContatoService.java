@@ -1,7 +1,9 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
+import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoCreateDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ContatoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
@@ -11,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,25 +25,33 @@ public class ContatoService {
     private final ClienteRepository clienteRepository;
 
 
-    public ContatoDTO create(Integer id, ContatoCreateDTO contatoCreateDTO) throws RegraDeNegocioException {
-        ContatoEntity contoEntity = objectMapper.convertValue(contatoCreateDTO, ContatoEntity.class);
-        PessoaEntity pessoaEntity = pessoaRepository.findById(id).stream()
-                .filter(x -> x.getIdPessoa().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RegraDeNegocioException("Contato não encontrado"));
-        contoEntity.setPessoaEntity(pessoaEntity);
-        ContatoEntity atualizado = contatoRepository.save(contoEntity);
-        ContatoDTO dto = objectMapper.convertValue(atualizado, ContatoDTO.class);
-        return null;
+    public ContatoDTO create(Integer idCliente, ContatoCreateDTO contatoCreateDTO) throws RegraDeNegocioException {
+        ClienteEntity clienteEntity = clienteRepository.findById(idCliente).orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado!"));
+        ContatoEntity contatoEntity = objectMapper.convertValue(contatoCreateDTO, ContatoEntity.class);
+        contatoEntity.setClienteEntity(clienteEntity);
+        ContatoEntity contatoCriado = contatoRepository.save(contatoEntity);
+        ContatoDTO dto = objectMapper.convertValue(contatoCriado, ContatoDTO.class);
+        ClienteDTO clienteDTO = objectMapper.convertValue(clienteEntity, ClienteDTO.class);
+        dto.setIdCliente(clienteDTO.getIdCliente());
+        return dto;
     }
 
     public List<ContatoDTO> list(){
 
-        return contatoRepository.findAll().stream()
-                .map(contato -> objectMapper.convertValue(contato, ContatoDTO.class))
-                .collect(Collectors.toList());
+        List<ContatoEntity> listaContatosEntity = contatoRepository.findAll();
+        List<ContatoDTO> listaContatosDTO = new ArrayList<>();
 
+        for(ContatoEntity contatoEntity : listaContatosEntity) {
+
+            ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
+            contatoDTO.setIdCliente(contatoEntity.getClienteEntity().getIdCliente());
+
+            listaContatosDTO.add(contatoDTO);
+        }
+
+        return listaContatosDTO;
     }
+
     private ContatoEntity findById(Integer id) throws RegraDeNegocioException {
         ContatoEntity contatoentity = contatoRepository.findById(id)
                 .orElseThrow(() -> new RegraDeNegocioException("Contato não encontrado"));
@@ -50,18 +61,20 @@ public class ContatoService {
     public ContatoDTO getById(Integer id) throws RegraDeNegocioException {
         ContatoEntity entity = findById(id);
         ContatoDTO dto = objectMapper.convertValue(entity, ContatoDTO.class);
+        dto.setIdCliente(entity.getClienteEntity().getIdCliente());
         return dto;
     }
 
     public ContatoDTO update(Integer idContato,
                              ContatoCreateDTO contatoCreateDTO) throws RegraDeNegocioException {
 
-        findById(idContato);
+        ContatoEntity contatoEntity = findById(idContato);
         ContatoEntity contato = objectMapper.convertValue(contatoCreateDTO,ContatoEntity.class);
         contato.setIdContato(idContato);
+        contato.setClienteEntity(contatoEntity.getClienteEntity());
         ContatoEntity contatoupdate = contatoRepository.save(contato);
         ContatoDTO contatoDTO = objectMapper.convertValue(contatoupdate, ContatoDTO.class);
-
+        contatoDTO.setIdCliente(contatoupdate.getClienteEntity().getIdCliente());
         return contatoDTO;
 
     }

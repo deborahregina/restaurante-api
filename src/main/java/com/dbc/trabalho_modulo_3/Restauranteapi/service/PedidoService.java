@@ -57,7 +57,7 @@ public class PedidoService {
         String dateToStr = DateFormat.getInstance().format(dataPedido);
         pedidoEntity.setData(dateToStr);
 
-        PedidoEntity pedidoCriado = pedidoRepository.create(pedidoEntity);
+        PedidoEntity pedidoCriado = pedidoRepository.save(pedidoEntity);
         List<PedidoProdutoDTO> listaPedidosProdutoDTO = pedidoCriado.getProdutosDoPedido().stream()
                 .map(pedidoProduto -> objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class))
                 .collect(Collectors.toList());
@@ -74,7 +74,7 @@ public class PedidoService {
 
     public PedidoDTO getByID(Integer idPedido) throws RegraDeNegocioException {
 
-        PedidoEntity pedidoEntity = pedidoRepository.getByID(idPedido);
+        PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pessoa não encontrada"));
 
         PedidoDTO pedidoDTO = objectMapper.convertValue(pedidoEntity, PedidoDTO.class);
         pedidoDTO.setData(pedidoEntity.getData());
@@ -91,14 +91,15 @@ public class PedidoService {
     }
 
     public void delete(Integer idPedido) throws RegraDeNegocioException {
-        pedidoRepository.delete(idPedido);
+        PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(()-> new RegraDeNegocioException("Pedido não encontrado!"));
+        pedidoRepository.delete(pedidoEntity);
     }
 
 
 
     public List<PedidoDTO> list() throws RegraDeNegocioException {
 
-        List<PedidoEntity> listaPedidoEntities = pedidoRepository.list();
+        List<PedidoEntity> listaPedidoEntities = pedidoRepository.findAll();
         List<PedidoDTO> pedidoDTOList = new ArrayList<>();
 
         for(PedidoEntity pedidoEntity: listaPedidoEntities) {

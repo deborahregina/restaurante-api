@@ -25,10 +25,10 @@ public class SpringFoxConfig {
                 .useDefaultResponseMessages(false)
                 .apiInfo(new ApiInfoBuilder()
                         .title("Restaurante API")
-                        .description("Trabalho final módulo 3")
-                        .version("1.0.0")
+                        .description("Trabalho final módulo 3.2")
+                        .version("2.0.0")
                         .license("Apache 2.0")
-                        .contact(new Contact("Adriele, Camile e Deborah","www.dbccompany.com.br","deborah.regina@dbccompany.com"))
+                        .contact(new Contact("Adriele, Camile, Deborah e Guilherme","www.dbccompany.com.br","deborah.regina@dbccompany.com"))
                         .build());
     }
 }

@@ -279,4 +279,12 @@ public class PedidoService {
         return pedidoDTO;
     }
 
+    public Page<PedidoDTO> findByStatus(TipoStatus status, Pageable pageable) {
+        Page<PedidoDTO> entities =
+                pedidoRepository.findByStatus(status, pageable)
+                        .map(pedidoEntity -> fromEntity(pedidoEntity));
+        return entities;
+
+    }
+
 }

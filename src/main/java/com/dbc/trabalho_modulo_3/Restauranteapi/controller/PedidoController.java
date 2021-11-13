@@ -3,6 +3,7 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoCreateDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoStatus;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.PedidoService;
 import freemarker.template.TemplateException;
@@ -23,6 +24,7 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @Slf4j
@@ -84,8 +86,18 @@ public class PedidoController {
             @RequestParam Integer quantidadeDeRegistrosPorPagina){
         Pageable pageable = PageRequest.of(pagina,
                 quantidadeDeRegistrosPorPagina,
-                Sort.by("data").descending());
+                Sort.by("data"));
         Page<PedidoDTO> paginaDoBanco = pedidoService.findAll(pageable);
+        return paginaDoBanco;
+    }
+
+    @GetMapping("/lista-por-Status")
+    public Page<PedidoDTO> findByStatus(
+            @RequestParam Integer pagina,
+            @RequestParam Integer quantidadeDeRegistrosPorPagina, @RequestParam TipoStatus status){
+        Pageable pageable = PageRequest.of(pagina,
+                quantidadeDeRegistrosPorPagina); //ordenação (opcional)
+        Page<PedidoDTO> paginaDoBanco = pedidoService.findByStatus(status,pageable);
         return paginaDoBanco;
     }
 }

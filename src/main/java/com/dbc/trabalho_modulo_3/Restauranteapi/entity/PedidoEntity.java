@@ -38,7 +38,7 @@ public class PedidoEntity {
     @Column(name = "VALOR_TOTAL")
     private BigDecimal valorTotal;
     @Column(name = "STATUS")
-    private String status;
+    private TipoStatus status;
     @Column(name = "DATA_PEDIDO")
     private LocalDateTime data;
 

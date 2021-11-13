@@ -66,10 +66,18 @@ public class ProdutoService {
     public void delete(Integer idProduto) throws Exception {
         ProdutoEntity produtoEntity = produtoRepository.findById(idProduto).orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado!"));
 
-        List<PedidoProdutoEntity> pedidoProduto = pedidoProdutoRepository.findAll();
+      /*  List<PedidoProdutoEntity> pedidoProduto = pedidoProdutoRepository.findAll();
         for (PedidoProdutoEntity produtoPedido : pedidoProduto) {
             if (produtoPedido.getProdutoEntity().getIdProduto() == idProduto){
                 pedidoProdutoRepository.delete(produtoPedido);
+            }
+
+        }*/
+
+        List<PedidoProdutoEntity> listaQuery = pedidoProdutoRepository.buscaPorIdProduto(idProduto);
+        if (!listaQuery.isEmpty()) {
+            for (PedidoProdutoEntity pedidoProduto : listaQuery) {
+                pedidoProdutoRepository.delete(pedidoProduto);
             }
         }
         produtoRepository.delete(produtoEntity);

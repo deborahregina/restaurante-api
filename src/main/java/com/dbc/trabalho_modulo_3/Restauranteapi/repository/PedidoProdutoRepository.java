@@ -11,5 +11,8 @@ import java.util.List;
 public interface PedidoProdutoRepository extends JpaRepository<PedidoProdutoEntity,Integer> {
 
     @Query(value = "select * from pedido_produto pp where pp.id_produto = :idProduto AND pp.id_pedido = :idPedido",nativeQuery = true)
-    List<PedidoProdutoEntity> buscaPorProduto(Integer idProduto, Integer idPedido);
+    List<PedidoProdutoEntity> buscaPorProdutoEPedido(Integer idProduto, Integer idPedido);
+
+    @Query(value = "SELECT * from PEDIDO_PRODUTO pp where pp.id_produto = :idProduto", nativeQuery = true)
+    List<PedidoProdutoEntity> buscaPorIdProduto(Integer idProduto);
 }

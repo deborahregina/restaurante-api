@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,12 +61,14 @@ public class EmailService {
         helper.setTo(cliente.getEmail());
         helper.setSubject("Informações do novo pedido");
 
+        DateTimeFormatter formatData = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
         Template template = configuration.getTemplate("email-template.ftl");
         Map<String, Object> dados = new HashMap<>();
         dados.put("nomeUsuario", cliente.getNome());
         dados.put("produtos",produtosDoPedido);
         dados.put("valorTotal", "R$ " + formatter.format(pedido.getValorTotal()));
-        dados.put("data", pedido.getData());
+        dados.put("data", pedido.getData().format(formatData));
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
 
         helper.setText(html, true);

@@ -5,7 +5,12 @@ import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoProdutoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ProdutoDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoProdutoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ProdutoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
+import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ProdutoRepository;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -35,17 +40,18 @@ public class EmailService {
     private String remetente;
     private final Configuration configuration;
     private final ProdutoService produtoService;
+    private final ProdutoRepository produtoRepository;
 
     NumberFormat formatter = new DecimalFormat("#0.00");
 
-    public void enviarEmailComTemplate(PedidoDTO pedidoDTO, ClienteDTO cliente) throws MessagingException, IOException, TemplateException, RegraDeNegocioException {
+    public void enviarEmailComTemplate(PedidoEntity pedido, ClienteEntity cliente) throws MessagingException, IOException, TemplateException, RegraDeNegocioException {
         MimeMessage mimeMessage = emailSender.createMimeMessage();
 
         String produtosDoPedido = "";
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
 
-        for(PedidoProdutoDTO pedidoProduto : pedidoDTO.getPedidoProduto()) {
-            ProdutoDTO produto = produtoService.getById(pedidoProduto.getIdproduto());
+        for(PedidoProdutoEntity pedidoProduto : pedido.getProdutosDoPedido()) {
+            ProdutoEntity produto = pedidoProduto.getProdutoEntity();
             produtosDoPedido += "<br>"+pedidoProduto.getQuantidade()+ "x "+ produto.getDescricao() + ":                                            " +
                     "    R$ " + formatter.format(produto.getValorUnitario().multiply(BigDecimal.valueOf(pedidoProduto.getQuantidade())));
         }
@@ -58,8 +64,8 @@ public class EmailService {
         Map<String, Object> dados = new HashMap<>();
         dados.put("nomeUsuario", cliente.getNome());
         dados.put("produtos",produtosDoPedido);
-        dados.put("valorTotal", "R$ " + formatter.format(pedidoDTO.getValorTotal()));
-        dados.put("data", pedidoDTO.getData());
+        dados.put("valorTotal", "R$ " + formatter.format(pedido.getValorTotal()));
+        dados.put("data", pedido.getData());
         String html = FreeMarkerTemplateUtils.processTemplateIntoString(template, dados);
 
         helper.setText(html, true);

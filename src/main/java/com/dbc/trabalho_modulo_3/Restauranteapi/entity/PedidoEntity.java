@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Getter
@@ -31,9 +32,8 @@ public class PedidoEntity {
     private ClienteEntity clienteEntity;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id_pedido", referencedColumnName = "id_pedido")
-    private List<PedidoProdutoEntity> produtosDoPedido;
+    @OneToMany(mappedBy = "pedidoEntity", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PedidoProdutoEntity> produtosDoPedido;
 
     @Column(name = "VALOR_TOTAL")
     private BigDecimal valorTotal;

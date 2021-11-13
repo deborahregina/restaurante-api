@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -21,7 +23,7 @@ public class ProdutoEntity {
     private Integer idProduto;
 
     @Column(name = "VALOR_UNITARIO")
-    private Double valorUnitario;
+    private BigDecimal valorUnitario;
 
     @Column(name = "DESCRICAO")
     private String descricao;
@@ -30,5 +32,8 @@ public class ProdutoEntity {
     @Column(name = "TIPO_PRODUTO")
     private TipoProduto tipoProduto;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "produtoEntity", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<PedidoProdutoEntity> listaProdutoEntity;
 
 }

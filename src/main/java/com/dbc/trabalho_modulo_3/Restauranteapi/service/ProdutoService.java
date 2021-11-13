@@ -48,7 +48,7 @@ public class ProdutoService {
     }
 
     public ProdutoDTO getById(Integer idProduto) throws RegraDeNegocioException {
-        ProdutoEntity produto = produtoRepository.getById(idProduto);
+        ProdutoEntity produto = produtoRepository.findById(idProduto).orElseThrow(() -> new RegraDeNegocioException("produto não encontrado"));
         ProdutoDTO produtoDTO = objectMapper.convertValue(produto,ProdutoDTO.class);
         return produtoDTO;
     }

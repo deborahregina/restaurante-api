@@ -10,7 +10,7 @@ import javax.validation.constraints.Min;
 public class PedidoProdutoDTO {
 
     @ApiModelProperty(value = "id produto")
-    private Integer Idproduto;
+    private Integer IdProduto;
 
     @Min(value = 1, message = "Deve ser maior que zero")
     @ApiModelProperty(value = "Quantidade")

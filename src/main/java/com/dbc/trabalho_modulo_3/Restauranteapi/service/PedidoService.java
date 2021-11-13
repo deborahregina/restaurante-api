@@ -2,10 +2,7 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
 
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoProdutoEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ProdutoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoProdutoRepository;
@@ -15,6 +12,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -247,6 +246,37 @@ public class PedidoService {
         return pedidoRepository.findAll().stream().
                 filter(pedido -> pedido.getClienteEntity().getIdCliente().equals(idCliente)).collect(Collectors.toList());
 
+    }
+
+    public Page<PedidoDTO> findAll(Pageable pageable) {
+
+        Page<PedidoDTO> entities =
+                pedidoRepository.findAll(pageable)
+                        .map(pedidoEntity -> fromEntity(pedidoEntity));
+        return entities;
+    }
+
+    private PedidoDTO fromEntity(PedidoEntity pedido) {
+
+        PedidoDTO pedidoDTO = objectMapper.convertValue(pedido, PedidoDTO.class);
+
+        pedidoDTO.setIdPedido(pedido.getIdPedido());
+        pedidoDTO.setIdCliente(pedido.getClienteEntity().getIdCliente());
+        pedidoDTO.setData(pedido.getData());
+        pedidoDTO.setValorTotal(pedido.getValorTotal());
+        Set<PedidoProdutoEntity> pedidoProdutoEntities = pedido.getProdutosDoPedido();
+        List<PedidoProdutoDTO> pedidoProdutoDTOS = new ArrayList<>();
+
+        for(PedidoProdutoEntity pedidoProduto: pedidoProdutoEntities) {
+            PedidoProdutoDTO pedidoProdutoDTO = objectMapper.convertValue(pedidoProduto,PedidoProdutoDTO.class);
+            pedidoProdutoDTO.setIdProduto(pedidoProduto.getProdutoEntity().getIdProduto());
+            pedidoProdutoDTOS.add(pedidoProdutoDTO);
+
+        }
+
+        pedidoDTO.setPedidoProduto(pedidoProdutoDTOS);
+
+        return pedidoDTO;
     }
 
 }

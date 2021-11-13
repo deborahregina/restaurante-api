@@ -12,6 +12,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,4 +78,14 @@ public class PedidoController {
     }
 
 
+    @GetMapping("/lista-pedidos-ordenados-data")
+    public Page<PedidoDTO> findAllByData(
+            @RequestParam Integer pagina,
+            @RequestParam Integer quantidadeDeRegistrosPorPagina){
+        Pageable pageable = PageRequest.of(pagina,
+                quantidadeDeRegistrosPorPagina,
+                Sort.by("data").descending());
+        Page<PedidoDTO> paginaDoBanco = pedidoService.findAll(pageable);
+        return paginaDoBanco;
+    }
 }

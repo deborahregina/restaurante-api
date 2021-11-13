@@ -6,7 +6,10 @@ import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioExceptio
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.models.auth.In;
+import org.springframework.core.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -178,7 +181,39 @@ public class ClienteService {
         }
     }
 
+    public Page<ClienteDTO> findAll(Pageable pageable) {
 
+        Page<ClienteDTO> entities =
+                clienteRepository.findAll(pageable)
+                        .map(clienteEntity -> fromEntity(clienteEntity));
+        return entities;
+    }
+
+    private ClienteDTO fromEntity(ClienteEntity cliente) {
+
+        ClienteDTO clienteDTO = objectMapper.convertValue(cliente, ClienteDTO.class);
+
+        clienteDTO.setIdCliente(cliente.getIdCliente());
+        Set<EnderecoEntity> enderecosEntity = cliente.getEnderecos();
+        List<EnderecoDTO> enderecosDTO = new ArrayList<>();
+        for(EnderecoEntity endeco: enderecosEntity) {
+            EnderecoDTO enderecoDTO = objectMapper.convertValue(endeco,EnderecoDTO.class);
+            enderecoDTO.setIdCliente(cliente.getIdCliente());
+            enderecosDTO.add(enderecoDTO);
+
+        }
+        Set<ContatoEntity> contatoEntities = cliente.getContatos();
+        List<ContatoDTO> contatosDTO = new ArrayList<>();
+        for(ContatoEntity contato: contatoEntities) {
+            ContatoDTO contatoDTO = objectMapper.convertValue(contato,ContatoDTO.class);
+            contatoDTO.setIdCliente(cliente.getIdCliente());
+            contatosDTO.add(contatoDTO);
+        }
+
+        clienteDTO.setContatos(contatosDTO);
+        clienteDTO.setEnderecos(enderecosDTO);
+        return clienteDTO;
+    }
 }
 
 

@@ -176,6 +176,14 @@ public class PedidoService {
             produtoService.getById(pedidoProduto.getIdProduto());
         }
 
+        for (PedidoProdutoEntity pedidoProdutoEntity : pedidoRecuperado.getProdutosDoPedido()) {
+            for (PedidoProdutoDTO pedidoProdutoDTO : pedidoCreateDTO.getPedidoProduto()) {
+                if (pedidoProdutoEntity.getProdutoEntity().getIdProduto() == pedidoProdutoDTO.getIdProduto()) {
+                    pedidoProdutoRepository.delete(pedidoProdutoEntity);
+                }
+            }
+        }
+
 
         PedidoEntity pedidoEntity = objectMapper.convertValue(pedidoCreateDTO, PedidoEntity.class);
 

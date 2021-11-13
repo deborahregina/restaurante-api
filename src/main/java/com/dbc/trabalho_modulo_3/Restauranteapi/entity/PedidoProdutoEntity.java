@@ -19,12 +19,12 @@ public class PedidoProdutoEntity {
     private Integer idPedidoProduto;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_pedido", referencedColumnName = "id_pedido")
     private PedidoEntity pedidoEntity;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_produto", referencedColumnName = "id_produto")
     private ProdutoEntity produtoEntity;
 

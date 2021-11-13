@@ -32,7 +32,7 @@ public class PedidoEntity {
     private ClienteEntity clienteEntity;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pedidoEntity", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "pedidoEntity", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<PedidoProdutoEntity> produtosDoPedido;
 
     @Column(name = "VALOR_TOTAL")

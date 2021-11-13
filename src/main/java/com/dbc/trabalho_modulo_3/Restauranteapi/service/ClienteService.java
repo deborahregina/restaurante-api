@@ -3,10 +3,7 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
-import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
-import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ContatoRepository;
-import com.dbc.trabalho_modulo_3.Restauranteapi.repository.EnderecoRepository;
-import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoRepository;
+import com.dbc.trabalho_modulo_3.Restauranteapi.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +25,7 @@ public class ClienteService {
     private final ContatoRepository contatoRepository;
     private final PedidoRepository pedidoRepository;
     private final EnderecoRepository enderecoRepository;
+    private final PedidoProdutoRepository pedidoProdutoRepository;
 
     public ClienteDTO create(ClienteCreateDTO clienteCreateDTO) throws Exception {
 
@@ -167,8 +165,17 @@ public class ClienteService {
     public void delete(Integer idCliente) throws Exception {
 
         ClienteEntity cliente = findById(idCliente);
-        clienteRepository.delete(cliente);
-
+        if (cliente.getPedidos() != null) {
+            for (PedidoEntity pedido : cliente.getPedidos()) {
+                if (pedido.getProdutosDoPedido() != null) {
+                    for (PedidoProdutoEntity pedidoProduto : pedido.getProdutosDoPedido()) {
+                        pedidoProdutoRepository.delete(pedidoProduto);
+                    }
+                }
+                pedidoRepository.delete(pedido);
+            }
+            clienteRepository.delete(cliente);
+        }
     }
 
 

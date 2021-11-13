@@ -38,6 +38,6 @@ public class ClienteEntity {
     private Set<EnderecoEntity> enderecos;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "clienteEntity", fetch = FetchType.LAZY)
     private Set<PedidoEntity> pedidos;
 }

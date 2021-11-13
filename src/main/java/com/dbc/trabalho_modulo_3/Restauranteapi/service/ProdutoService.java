@@ -1,11 +1,9 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ProdutoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
+import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoProdutoRepository;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +19,7 @@ public class ProdutoService {
 
     private final ObjectMapper objectMapper;
     private final ProdutoRepository produtoRepository;
+    private final PedidoProdutoRepository pedidoProdutoRepository;
 
     public List<ProdutoDTO> list(Integer idProduto) throws RegraDeNegocioException {
 
@@ -66,6 +65,13 @@ public class ProdutoService {
 
     public void delete(Integer idProduto) throws Exception {
         ProdutoEntity produtoEntity = produtoRepository.findById(idProduto).orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado!"));
+
+        List<PedidoProdutoEntity> pedidoProduto = pedidoProdutoRepository.findAll();
+        for (PedidoProdutoEntity produtoPedido : pedidoProduto) {
+            if (produtoPedido.getProdutoEntity().getIdProduto() == idProduto){
+                pedidoProdutoRepository.delete(produtoPedido);
+            }
+        }
         produtoRepository.delete(produtoEntity);
     }
 

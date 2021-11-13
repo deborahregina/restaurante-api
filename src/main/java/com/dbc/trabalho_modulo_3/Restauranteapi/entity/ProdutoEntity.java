@@ -2,7 +2,9 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -13,6 +15,8 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer"})
+//@OnDelete(action=OnDeleteAction.NO_ACTION)
 @Entity(name = "PRODUTO")
 public class ProdutoEntity {
 
@@ -33,7 +37,7 @@ public class ProdutoEntity {
     private TipoProduto tipoProduto;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "produtoEntity", fetch = FetchType.LAZY,cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "produtoEntity", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<PedidoProdutoEntity> listaProdutoEntity;
 
 }

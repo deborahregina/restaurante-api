@@ -19,6 +19,8 @@ public class ClienteCreateDTO {
     @NotNull
     @ApiModelProperty(value = "Nome do Cliente")
     private String nome;
+    @NotNull(message = "Não pode ser nulo")
+    @ApiModelProperty(value = "E-mai")
     @Email
     private String email;
 

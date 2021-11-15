@@ -46,53 +46,15 @@ public class ClienteService {
 
             List<ClienteEntity> listaClienteEntity = clienteRepository.findAll();
             for (ClienteEntity cliente : listaClienteEntity) {
-
-                ClienteDTO clienteDTO = objectMapper.convertValue(cliente, ClienteDTO.class);
-                clienteDTO.setContatos(cliente.getContatos().stream()
-                        .map(contatoEntity -> {
-
-                            ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
-                            contatoDTO.setIdCliente(clienteDTO.getIdCliente());
-                            return contatoDTO;
-
-                        }).collect(Collectors.toList()));
-
-
-                clienteDTO.setEnderecos(cliente.getEnderecos().stream()
-                        .map(enderecoEntity -> {
-
-                            EnderecoDTO enderecoDTO = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
-                            enderecoDTO.setIdCliente(clienteDTO.getIdCliente());
-                            return enderecoDTO;
-                        }).collect(Collectors.toList()));
-
-                clienteDTOS.add(clienteDTO);
+                clienteDTOS.add(fromEntity(cliente));
             }
             return clienteDTOS;
         }
 
         ClienteEntity cliente = findById(idCliente);
 
-        ClienteDTO clienteDTO = objectMapper.convertValue(cliente, ClienteDTO.class);
-        clienteDTO.setContatos(cliente.getContatos().stream()
-                .map(contatoEntity -> {
 
-                    ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
-                    contatoDTO.setIdCliente(cliente.getIdCliente());
-                    return contatoDTO;
-
-                }).collect(Collectors.toList()));
-
-
-        clienteDTO.setEnderecos(cliente.getEnderecos().stream()
-                .map(enderecoEntity -> {
-
-                    EnderecoDTO enderecoDTO = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
-                    enderecoDTO.setIdCliente(cliente.getIdCliente());
-                    return enderecoDTO;
-                }).collect(Collectors.toList()));
-
-        clienteDTOS.add(clienteDTO);
+        clienteDTOS.add(fromEntity(cliente));
         return clienteDTOS;
     }
 
@@ -103,29 +65,6 @@ public class ClienteService {
         return entity;
     }
 
-    public ClienteDTO getByID(Integer id) throws RegraDeNegocioException {
-        ClienteEntity entity = clienteRepository.findById(id)
-                .orElseThrow(() -> new RegraDeNegocioException("cliente não encontrado"));
-        ClienteDTO clienteDTO = objectMapper.convertValue(entity, ClienteDTO.class);
-        List<EnderecoDTO> listaEnd = entity.getEnderecos().stream()
-                .map(enderecoEntity -> {
-                    EnderecoDTO endDTO = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
-                    endDTO.setIdCliente(enderecoEntity.getClienteEntity().getIdCliente());
-                    return endDTO;
-                }).collect(Collectors.toList());
-
-        List<ContatoDTO> listaCont = entity.getContatos().stream()
-                .map(contatoEntity -> {
-                    ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
-                    contatoDTO.setIdCliente(contatoEntity.getClienteEntity().getIdCliente());
-                    return contatoDTO;
-                }).collect(Collectors.toList());
-
-
-        clienteDTO.setEnderecos(listaEnd);
-        clienteDTO.setContatos(listaCont);
-        return clienteDTO;
-    }
 
     public ClienteDTO findByID(Integer idCliente) throws RegraDeNegocioException {
         ClienteEntity cliente = clienteRepository.findById(idCliente).orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado"));
@@ -136,33 +75,14 @@ public class ClienteService {
     public ClienteDTO update(Integer idCliente, ClienteCreateDTO clienteCreateDTO) throws RegraDeNegocioException {
         ClienteEntity clienteEntity = findById(idCliente);
 
-        ClienteEntity clienteConvertido = objectMapper.convertValue(clienteCreateDTO, ClienteEntity.class);
+        clienteEntity.setEmail(clienteCreateDTO.getEmail());
+        clienteEntity.setCpf(clienteCreateDTO.getCpf());
+        clienteEntity.setNome(clienteCreateDTO.getNome());
+
+        ClienteEntity clienteAtualizado = clienteRepository.save(clienteEntity);
 
 
-        ClienteEntity clienteAtualizado = clienteRepository.save(clienteConvertido);
-
-        ClienteDTO clienteAtualizadoDTO = objectMapper.convertValue(clienteAtualizado, ClienteDTO.class);
-
-        clienteConvertido.setContatos(clienteEntity.getContatos());
-        clienteConvertido.setEnderecos(clienteEntity.getEnderecos());
-
-        clienteAtualizadoDTO.setEnderecos(clienteAtualizado.getEnderecos().stream().map(
-                enderecoEntity -> {
-                    EnderecoDTO enderecoDTO = objectMapper.convertValue(enderecoEntity, EnderecoDTO.class);
-                    enderecoDTO.setIdCliente(clienteAtualizadoDTO.getIdCliente());
-                    return enderecoDTO;
-                }
-        ).collect(Collectors.toList()));
-
-        clienteAtualizadoDTO.setContatos(clienteAtualizado.getContatos().stream().map(
-                contatoEntity -> {
-                    ContatoDTO contatoDTO = objectMapper.convertValue(contatoEntity, ContatoDTO.class);
-                    contatoDTO.setIdCliente(clienteAtualizadoDTO.getIdCliente());
-                    return contatoDTO;
-                }
-        ).collect(Collectors.toList()));
-
-        return clienteAtualizadoDTO;
+        return fromEntity(clienteAtualizado);
     }
 
     public void delete(Integer idCliente) throws Exception {
@@ -196,16 +116,16 @@ public class ClienteService {
         clienteDTO.setIdCliente(cliente.getIdCliente());
         Set<EnderecoEntity> enderecosEntity = cliente.getEnderecos();
         List<EnderecoDTO> enderecosDTO = new ArrayList<>();
-        for(EnderecoEntity endeco: enderecosEntity) {
-            EnderecoDTO enderecoDTO = objectMapper.convertValue(endeco,EnderecoDTO.class);
+        for (EnderecoEntity endeco : enderecosEntity) {
+            EnderecoDTO enderecoDTO = objectMapper.convertValue(endeco, EnderecoDTO.class);
             enderecoDTO.setIdCliente(cliente.getIdCliente());
             enderecosDTO.add(enderecoDTO);
 
         }
         Set<ContatoEntity> contatoEntities = cliente.getContatos();
         List<ContatoDTO> contatosDTO = new ArrayList<>();
-        for(ContatoEntity contato: contatoEntities) {
-            ContatoDTO contatoDTO = objectMapper.convertValue(contato,ContatoDTO.class);
+        for (ContatoEntity contato : contatoEntities) {
+            ContatoDTO contatoDTO = objectMapper.convertValue(contato, ContatoDTO.class);
             contatoDTO.setIdCliente(cliente.getIdCliente());
             contatosDTO.add(contatoDTO);
         }

@@ -20,7 +20,7 @@ public class ProdutoCreateDTO {
     @NotNull
     @ApiModelProperty(value = "Descrição do produto")
     private String descricao;
-    @NotNull
+    @NotNull(message = "0 ou 1")
     @ApiModelProperty(value = "Tipo de produto   0- Bebida  1- Comida")
     private TipoProduto tipoProduto;
 }

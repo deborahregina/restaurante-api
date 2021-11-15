@@ -79,10 +79,10 @@ public class ContatoService {
                              ContatoCreateDTO contatoCreateDTO) throws RegraDeNegocioException {
 
         ContatoEntity contatoEntity = findById(idContato);
-        ContatoEntity contato = objectMapper.convertValue(contatoCreateDTO,ContatoEntity.class);
-        contato.setIdContato(idContato);
-        contato.setClienteEntity(contatoEntity.getClienteEntity());
-        ContatoEntity contatoupdate = contatoRepository.save(contato);
+        contatoEntity.setTipoContato(contatoCreateDTO.getTipoContato());
+        contatoEntity.setDescricao(contatoCreateDTO.getDescricao());
+        contatoEntity.setNumero(contatoCreateDTO.getNumero());
+        ContatoEntity contatoupdate = contatoRepository.save(contatoEntity);
         ContatoDTO contatoDTO = objectMapper.convertValue(contatoupdate, ContatoDTO.class);
         contatoDTO.setIdCliente(contatoupdate.getClienteEntity().getIdCliente());
         return contatoDTO;

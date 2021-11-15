@@ -13,14 +13,14 @@ import javax.validation.constraints.Size;
 public class ContatoCreateDTO {
 
 
-    @NotNull
+    @NotNull(message = "0 ou 1")
     @ApiModelProperty(value = "Tipo de contato 0 - Residencial  1 - Comercial")
     private TipoContato tipoContato;
 
 
     @NotEmpty
     @NotNull
-    @Size(max = 13, message = "numero maior que 13 digitos")
+    @Size(min = 3,max = 13, message = "numero maior que 13 digitos e não ser nulo")
     @ApiModelProperty(value = "Número telefone")
     private String numero;
 

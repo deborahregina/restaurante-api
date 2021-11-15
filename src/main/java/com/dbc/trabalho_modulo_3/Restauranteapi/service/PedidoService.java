@@ -45,7 +45,7 @@ public class PedidoService {
             produtoService.getById(pedidoProduto.getIdProduto());
         }
 
-        ClienteEntity cliente = clienteRepository.getById(idCliente);
+        ClienteEntity cliente = clienteRepository.findById(idCliente).orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado"));
         PedidoEntity pedidoEntity = objectMapper.convertValue(pedidoCreateDTO, PedidoEntity.class);
 
         LocalDateTime dataPedido = LocalDateTime.now();
@@ -69,23 +69,9 @@ public class PedidoService {
 
         pedidoCriado = pedidoRepository.save(pedidoEntity);
 
-
-        List<PedidoProdutoDTO> listaProdutosDTO = new ArrayList<>();
-        for (PedidoProdutoEntity pedidoProduto : pedidoCriado.getProdutosDoPedido()) {
-            PedidoProdutoDTO pedidoProdutoDTO = objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class);
-            pedidoProdutoDTO.setIdProduto(pedidoProduto.getProdutoEntity().getIdProduto());
-            listaProdutosDTO.add(pedidoProdutoDTO);
-        }
-
-        PedidoDTO pedidoDTO = objectMapper.convertValue(pedidoCriado, PedidoDTO.class);
-        pedidoDTO.setPedidoProduto(listaProdutosDTO);
-        pedidoDTO.setValorTotal(pedidoCriado.getValorTotal());
-        pedidoDTO.setData(dataPedido);
-        pedidoDTO.setIdCliente(idCliente);
-
-
         emailService.enviarEmailComTemplate(pedidoCriado, cliente);
-        return pedidoDTO;
+
+        return fromEntity(pedidoCriado);
     }
 
     public PedidoDTO getByID(Integer idPedido) throws RegraDeNegocioException {
@@ -109,10 +95,9 @@ public class PedidoService {
     public void delete(Integer idPedido) throws RegraDeNegocioException {
         PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pedido não encontrado!"));
 
-        for(PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
-           pedidoProdutoRepository.delete(pedidoProduto);
+        for (PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
+            pedidoProdutoRepository.delete(pedidoProduto);
         }
-
 
         pedidoRepository.delete(pedidoEntity);
     }
@@ -127,22 +112,8 @@ public class PedidoService {
 
             for (PedidoEntity pedidoEntity : listaPedidoEntities) {
 
-                PedidoDTO pedidoConvertido = objectMapper.convertValue(pedidoEntity, PedidoDTO.class);
-
-
-                List<PedidoProdutoDTO> listaProdutosDTO = new ArrayList<>();
-                for (PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
-                    PedidoProdutoDTO pedidoProdutoDTO = objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class);
-                    pedidoProdutoDTO.setIdProduto(pedidoProduto.getProdutoEntity().getIdProduto());
-                    listaProdutosDTO.add(pedidoProdutoDTO);
-                }
-
-
-                pedidoConvertido.setPedidoProduto(listaProdutosDTO);
-                pedidoConvertido.setIdCliente(pedidoEntity.getClienteEntity().getIdCliente());
-                pedidoConvertido.setValorTotal(calculavalorTotal(pedidoEntity));
-                pedidoConvertido.setData(pedidoEntity.getData());
-                pedidoDTOList.add(pedidoConvertido);
+                pedidoEntity.setValorTotal(calculavalorTotal(pedidoEntity));
+                pedidoDTOList.add(fromEntity(pedidoEntity));
             }
 
             return pedidoDTOList;
@@ -150,19 +121,8 @@ public class PedidoService {
 
         PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pedido não encontrado"));
 
-        List<PedidoProdutoDTO> listaProdutosDTO = new ArrayList<>();
-        for (PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
-            PedidoProdutoDTO pedidoProdutoDTO = objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class);
-            pedidoProdutoDTO.setIdProduto(pedidoProduto.getProdutoEntity().getIdProduto());
-            listaProdutosDTO.add(pedidoProdutoDTO);
-        }
-
-        PedidoDTO pedidoConvertido = objectMapper.convertValue(pedidoEntity, PedidoDTO.class);
-        pedidoConvertido.setPedidoProduto(listaProdutosDTO);
-        pedidoConvertido.setIdCliente(pedidoEntity.getClienteEntity().getIdCliente());
-        pedidoConvertido.setValorTotal(calculavalorTotal(pedidoEntity));
-        pedidoConvertido.setData(pedidoEntity.getData());
-        pedidoDTOList.add(pedidoConvertido);
+        pedidoEntity.setValorTotal(calculavalorTotal(pedidoEntity));
+        pedidoDTOList.add(fromEntity(pedidoEntity));
 
         return pedidoDTOList;
     }
@@ -196,7 +156,7 @@ public class PedidoService {
         pedidoRecuperado.setProdutosDoPedido(pedidoEntity.getProdutosDoPedido());
         pedidoRecuperado.setStatus(pedidoEntity.getStatus());
 
-       PedidoEntity pedidoMod = pedidoRepository.save(pedidoRecuperado);
+        PedidoEntity pedidoMod = pedidoRepository.save(pedidoRecuperado);
 
         Set<PedidoProdutoEntity> listaProdutos = new HashSet<>();
         for (PedidoProdutoDTO pedidoProdutoDTO : pedidoCreateDTO.getPedidoProduto()) {
@@ -211,21 +171,8 @@ public class PedidoService {
         pedidoRecuperado.setValorTotal(calculavalorTotal(pedidoMod));
         pedidoMod = pedidoRepository.save(pedidoRecuperado);
 
-        List<PedidoProdutoDTO> listaProdutosDTO = new ArrayList<>();
-        for (PedidoProdutoEntity pedidoProduto : pedidoMod.getProdutosDoPedido()) {
-            PedidoProdutoDTO pedidoProdutoDTO = objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class);
-            pedidoProdutoDTO.setIdProduto(pedidoProduto.getProdutoEntity().getIdProduto());
-            listaProdutosDTO.add(pedidoProdutoDTO);
-        }
 
-        PedidoDTO pedidoDTO = objectMapper.convertValue(pedidoMod, PedidoDTO.class);
-        pedidoDTO.setPedidoProduto(listaProdutosDTO);
-        pedidoDTO.setValorTotal(pedidoMod.getValorTotal());
-        pedidoDTO.setData(dataPedido);
-        pedidoDTO.setIdCliente(cliente.getIdCliente());
-
-
-        return pedidoDTO;
+        return fromEntity(pedidoMod);
 
     }
 
@@ -241,20 +188,6 @@ public class PedidoService {
         return valorTotal;
     }
 
-    public List<PedidoEntity> listaPedidoEntityPorIdCliente(Integer idCliente) {
-
-        return pedidoRepository.findAll().stream().
-                filter(pedido -> pedido.getClienteEntity().getIdCliente().equals(idCliente)).collect(Collectors.toList());
-
-    }
-
-    public Page<PedidoDTO> findAll(Pageable pageable) {
-
-        Page<PedidoDTO> entities =
-                pedidoRepository.findAll(pageable)
-                        .map(pedidoEntity -> fromEntity(pedidoEntity));
-        return entities;
-    }
 
     private PedidoDTO fromEntity(PedidoEntity pedido) {
 
@@ -263,25 +196,43 @@ public class PedidoService {
         pedidoDTO.setIdPedido(pedido.getIdPedido());
         pedidoDTO.setIdCliente(pedido.getClienteEntity().getIdCliente());
         pedidoDTO.setData(pedido.getData());
-        pedidoDTO.setValorTotal(pedido.getValorTotal());
         Set<PedidoProdutoEntity> pedidoProdutoEntities = pedido.getProdutosDoPedido();
         List<PedidoProdutoDTO> pedidoProdutoDTOS = new ArrayList<>();
 
-        for(PedidoProdutoEntity pedidoProduto: pedidoProdutoEntities) {
-            PedidoProdutoDTO pedidoProdutoDTO = objectMapper.convertValue(pedidoProduto,PedidoProdutoDTO.class);
+        for (PedidoProdutoEntity pedidoProduto : pedidoProdutoEntities) {
+            PedidoProdutoDTO pedidoProdutoDTO = objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class);
             pedidoProdutoDTO.setIdProduto(pedidoProduto.getProdutoEntity().getIdProduto());
             pedidoProdutoDTOS.add(pedidoProdutoDTO);
 
         }
 
         pedidoDTO.setPedidoProduto(pedidoProdutoDTOS);
-
+        pedidoDTO.setValorTotal(pedido.getValorTotal());
         return pedidoDTO;
     }
 
-    public Page<PedidoDTO> findByStatus(TipoStatus status, Pageable pageable) {
+    public Page<PedidoDTO> findByStatus(TipoStatus status, Pageable pageable) throws RegraDeNegocioException {
+
+        if (status == null) {
+            Page<PedidoEntity> pedidosEntity = pedidoRepository.findAll(pageable);
+
+            for (PedidoEntity pedido : pedidosEntity.getContent()) {
+                pedido.setValorTotal(calculavalorTotal(pedido));
+            }
+
+            Page<PedidoDTO> entities =
+                    pedidosEntity.
+                            map(pedidoEntity -> fromEntity(pedidoEntity));
+            return entities;
+        }
+        Page<PedidoEntity> pedidosEntity = pedidoRepository.findByStatus(status, pageable);
+
+        for (PedidoEntity pedido : pedidosEntity.getContent()) {
+            pedido.setValorTotal(calculavalorTotal(pedido));
+        }
+
         Page<PedidoDTO> entities =
-                pedidoRepository.findByStatus(status, pageable)
+                pedidosEntity
                         .map(pedidoEntity -> fromEntity(pedidoEntity));
         return entities;
 

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Set;
 
@@ -32,7 +33,7 @@ public class ContatoController {
             @ApiResponse( code = 400, message = "contato não encontrado"),
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
-    public ContatoDTO create(@PathVariable("idCliente") Integer idCliente, @RequestBody ContatoCreateDTO contatoCreateDTO) throws Exception {
+    public ContatoDTO create(@PathVariable("idCliente") Integer idCliente, @RequestBody @Valid ContatoCreateDTO contatoCreateDTO) throws Exception {
         log.info("Contato criado");
         ContatoDTO contatonew = contatoService.create(idCliente, contatoCreateDTO);
         log.info("Contatao criado com sucesso");
@@ -58,7 +59,7 @@ public class ContatoController {
             @ApiResponse( code = 500, message = "Foi gerada uma exceção no sistema")
     })
     public ContatoDTO update(@PathVariable("idContato") Integer idContato,
-                             @RequestBody ContatoCreateDTO contatoCreateDTO) throws Exception {
+                             @RequestBody @Valid ContatoCreateDTO contatoCreateDTO) throws Exception {
         return contatoService.update(idContato, contatoCreateDTO);
     }
 

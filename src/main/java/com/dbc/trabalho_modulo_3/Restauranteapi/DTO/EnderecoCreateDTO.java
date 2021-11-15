@@ -5,6 +5,7 @@ import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoEndereco;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -12,7 +13,7 @@ import javax.validation.constraints.Size;
 public class EnderecoCreateDTO {
 
 
-    @NotNull
+    @NotNull(message = "0 ou 1")
     @ApiModelProperty(value = "Tipo Enderecço 0 - Residencial   1 - Comercial")
     private TipoEndereco tipoEndereco;
 
@@ -22,9 +23,12 @@ public class EnderecoCreateDTO {
     private String logradouro;
 
     @NotNull
+    @Min(1)
     @ApiModelProperty(value = "número")
-    private int numero;
+    private Integer numero;
 
+    @NotNull
+    @NotEmpty
     @ApiModelProperty(value = "Bairro")
     private String bairro;
 

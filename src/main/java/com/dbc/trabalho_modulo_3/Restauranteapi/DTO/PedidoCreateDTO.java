@@ -15,7 +15,7 @@ public class PedidoCreateDTO {
     private List<PedidoProdutoDTO> pedidoProduto;
 
 
-    @NotNull
+    @NotNull(message = "0 ou 1")
     @ApiModelProperty(value = "0 - Aberto   1 - Arquivado")
     private TipoStatus status;
 

@@ -72,7 +72,7 @@ public class PedidoService {
 
         pedidoCriado = pedidoRepository.save(pedidoEntity);
 
-        emailService.enviarEmailComTemplate(pedidoCriado, cliente);
+        //emailService.enviarEmailComTemplate(pedidoCriado, cliente);
 
         return fromEntity(pedidoCriado);
     }

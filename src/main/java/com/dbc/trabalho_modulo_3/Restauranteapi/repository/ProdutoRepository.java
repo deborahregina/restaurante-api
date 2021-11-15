@@ -1,11 +1,11 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.repository;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ProdutoEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoEndereco;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoProduto;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -14,5 +14,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Repository
 public interface ProdutoRepository  extends JpaRepository<ProdutoEntity,Integer> {
+
+    @Query("select p " +
+            " from PRODUTO p " +
+            "where tipoProduto = :tipoProduto ")
+    Page<ProdutoEntity> findByTipoProduto(TipoProduto tipoProduto, Pageable pageable);
 
 }

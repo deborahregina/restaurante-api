@@ -7,8 +7,11 @@ import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoProdutoReposito
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,6 +44,9 @@ public class ProdutoService {
     public ProdutoDTO create(ProdutoCreateDTO produtoCreateDTO) throws RegraDeNegocioException {
 
         ProdutoEntity produtoEntity = objectMapper.convertValue(produtoCreateDTO, ProdutoEntity.class);
+        if (produtoCreateDTO.getValorUnitario() == BigDecimal.ZERO) {
+            throw new RegraDeNegocioException("Valor unitário deve ser maior que zero.");
+        }
         ProdutoEntity produtoCriado = produtoRepository.save(produtoEntity);
         ProdutoDTO produtoDTO = objectMapper.convertValue(produtoCriado,ProdutoDTO.class);
         return produtoDTO;
@@ -55,6 +61,9 @@ public class ProdutoService {
     public ProdutoDTO update(Integer idProduto, ProdutoCreateDTO produtoCreateDTO) throws RegraDeNegocioException {
 
         produtoRepository.findById(idProduto).orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado"));
+        if (produtoCreateDTO.getValorUnitario() == BigDecimal.ZERO) {
+            throw new RegraDeNegocioException("Valor unitário deve ser maior que zero.");
+        }
         ProdutoEntity produtoEntity = objectMapper.convertValue(produtoCreateDTO, ProdutoEntity.class);
         produtoEntity.setIdProduto(idProduto);
         ProdutoEntity produtoAtualizado = produtoRepository.save(produtoEntity);
@@ -66,13 +75,6 @@ public class ProdutoService {
     public void delete(Integer idProduto) throws Exception {
         ProdutoEntity produtoEntity = produtoRepository.findById(idProduto).orElseThrow(() -> new RegraDeNegocioException("Produto não encontrado!"));
 
-      /*  List<PedidoProdutoEntity> pedidoProduto = pedidoProdutoRepository.findAll();
-        for (PedidoProdutoEntity produtoPedido : pedidoProduto) {
-            if (produtoPedido.getProdutoEntity().getIdProduto() == idProduto){
-                pedidoProdutoRepository.delete(produtoPedido);
-            }
-
-        }*/
 
         List<PedidoProdutoEntity> listaQuery = pedidoProdutoRepository.buscaPorIdProduto(idProduto);
         if (!listaQuery.isEmpty()) {
@@ -81,6 +83,13 @@ public class ProdutoService {
             }
         }
         produtoRepository.delete(produtoEntity);
+    }
+
+    public Page<ProdutoDTO> findByTipoProduto(TipoProduto tipoProduto, Pageable pageable) {
+        Page<ProdutoDTO> entities =
+                produtoRepository.findByTipoProduto(tipoProduto,pageable)
+                        .map(produtoEntity -> objectMapper.convertValue(produtoEntity,ProdutoDTO.class));
+        return entities;
     }
 
 }

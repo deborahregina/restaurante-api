@@ -4,6 +4,8 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ProdutoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoProduto;
+import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoStatus;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.ProdutoService;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,10 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -71,5 +77,16 @@ public class ProdutoController {
     })
     public void delete(@PathVariable("idProduto") Integer idProduto) throws Exception {
         produtoService.delete(idProduto);
+    }
+    @GetMapping("/lista-por-tipoProduto")
+    @ApiOperation(value = "Lista por tipo de produto")
+    public Page<ProdutoDTO> findByTipoProduto(
+            @RequestParam Integer pagina,
+            @RequestParam Integer quantidadeDeRegistrosPorPagina, @RequestParam TipoProduto tipoProduto) throws RegraDeNegocioException {
+        Pageable pageable = PageRequest.of(pagina,
+                quantidadeDeRegistrosPorPagina,
+                Sort.by("descricao"));
+        Page<ProdutoDTO> paginaDoBanco = produtoService.findByTipoProduto(tipoProduto, pageable);
+        return paginaDoBanco;
     }
 }

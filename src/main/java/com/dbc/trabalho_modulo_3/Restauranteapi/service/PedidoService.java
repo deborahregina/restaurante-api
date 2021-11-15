@@ -43,6 +43,9 @@ public class PedidoService {
 
         for (PedidoProdutoDTO pedidoProduto : pedidoCreateDTO.getPedidoProduto()) {
             produtoService.getById(pedidoProduto.getIdProduto());
+            if (pedidoProduto.getQuantidade() <= 0) {
+                throw new RegraDeNegocioException("Quantidade deve ser maior que zero para "+pedidoProduto.getIdProduto());
+            }
         }
 
         ClienteEntity cliente = clienteRepository.findById(idCliente).orElseThrow(() -> new RegraDeNegocioException("Cliente não encontrado"));
@@ -74,23 +77,6 @@ public class PedidoService {
         return fromEntity(pedidoCriado);
     }
 
-    public PedidoDTO getByID(Integer idPedido) throws RegraDeNegocioException {
-
-        PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pessoa não encontrada"));
-
-        PedidoDTO pedidoDTO = objectMapper.convertValue(pedidoEntity, PedidoDTO.class);
-        pedidoDTO.setData(pedidoEntity.getData());
-
-        List<PedidoProdutoDTO> listaPedidoProduto;
-
-        listaPedidoProduto = pedidoEntity.getProdutosDoPedido().stream()
-                .map(pedidoProduto -> objectMapper.convertValue(pedidoProduto, PedidoProdutoDTO.class))
-                .collect(Collectors.toList());
-
-        pedidoDTO.setPedidoProduto(listaPedidoProduto);
-        pedidoDTO.setValorTotal(calculavalorTotal(pedidoEntity));
-        return pedidoDTO;
-    }
 
     public void delete(Integer idPedido) throws RegraDeNegocioException {
         PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pedido não encontrado!"));
@@ -133,6 +119,9 @@ public class PedidoService {
 
         for (PedidoProdutoDTO pedidoProduto : pedidoCreateDTO.getPedidoProduto()) {
             produtoService.getById(pedidoProduto.getIdProduto());
+            if (pedidoProduto.getQuantidade() <= 0) {
+                throw new RegraDeNegocioException("Quantidade deve ser maior que zero para "+pedidoProduto.getIdProduto());
+            }
         }
 
         for (PedidoProdutoEntity pedidoProdutoEntity : pedidoRecuperado.getProdutosDoPedido()) {

@@ -1,13 +1,10 @@
-package com.dbc.trabalho_modulo_3.Restauranteapi.DTO;
+package com.dbc.trabalho_modulo_3.Restauranteapi.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Data
 public class PedidoDTO extends PedidoCreateDTO {

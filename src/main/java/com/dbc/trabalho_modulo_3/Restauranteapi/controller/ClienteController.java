@@ -1,8 +1,7 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteCreateDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.ClienteCreateDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.ClienteDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.ClienteService;
 import io.swagger.annotations.ApiOperation;

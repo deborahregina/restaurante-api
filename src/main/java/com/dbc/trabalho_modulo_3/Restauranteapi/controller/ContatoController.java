@@ -1,8 +1,7 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoCreateDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ContatoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.ContatoCreateDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.ContatoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.ContatoService;
 import io.swagger.annotations.ApiOperation;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @Slf4j

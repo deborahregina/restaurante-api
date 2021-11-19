@@ -1,4 +1,4 @@
-package com.dbc.trabalho_modulo_3.Restauranteapi.Config;
+package com.dbc.trabalho_modulo_3.Restauranteapi.config;
 
 
 import org.springframework.web.bind.annotation.GetMapping;

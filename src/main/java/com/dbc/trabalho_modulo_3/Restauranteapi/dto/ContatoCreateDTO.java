@@ -1,4 +1,4 @@
-package com.dbc.trabalho_modulo_3.Restauranteapi.DTO;
+package com.dbc.trabalho_modulo_3.Restauranteapi.dto;
 
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoContato;
 import io.swagger.annotations.ApiModelProperty;

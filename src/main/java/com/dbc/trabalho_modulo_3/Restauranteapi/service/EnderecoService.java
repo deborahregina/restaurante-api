@@ -1,12 +1,10 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoCreateDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.ClienteDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.EnderecoCreateDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.EnderecoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ContatoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
@@ -15,10 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

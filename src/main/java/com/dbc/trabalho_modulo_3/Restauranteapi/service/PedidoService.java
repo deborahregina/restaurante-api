@@ -1,7 +1,7 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
@@ -11,7 +11,6 @@ import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ProdutoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -19,12 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service

@@ -1,15 +1,14 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoCreateDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ContatoDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.ClienteDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.ContatoCreateDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.ContatoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ContatoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ContatoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.dbc.trabalho_modulo_3.Restauranteapi.DTO;
+package com.dbc.trabalho_modulo_3.Restauranteapi.dto;
 
 import java.util.List;
 

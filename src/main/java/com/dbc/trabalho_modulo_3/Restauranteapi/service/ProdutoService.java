@@ -1,6 +1,6 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoProdutoRepository;

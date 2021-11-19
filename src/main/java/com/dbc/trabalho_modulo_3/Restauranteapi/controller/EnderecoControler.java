@@ -1,15 +1,13 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoCreateDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.EnderecoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.EnderecoCreateDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.EnderecoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.EnderecoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;

@@ -1,6 +1,5 @@
-package com.dbc.trabalho_modulo_3.Restauranteapi.DTO;
+package com.dbc.trabalho_modulo_3.Restauranteapi.dto;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

@@ -1,13 +1,11 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoCreateDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.PedidoCreateDTO;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.PedidoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoStatus;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.PedidoService;
 import freemarker.template.TemplateException;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -24,7 +22,6 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 @RestController
 @Slf4j

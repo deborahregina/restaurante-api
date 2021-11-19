@@ -1,10 +1,5 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.*;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ClienteDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.PedidoProdutoDTO;
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.ProdutoDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ClienteEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoEntity;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.PedidoProdutoEntity;
@@ -16,7 +11,6 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;

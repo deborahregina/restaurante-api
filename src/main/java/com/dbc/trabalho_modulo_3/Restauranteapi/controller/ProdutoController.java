@@ -1,11 +1,8 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.controller;
 
 
-import com.dbc.trabalho_modulo_3.Restauranteapi.DTO.*;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.EnderecoEntity;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.ProdutoEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoProduto;
-import com.dbc.trabalho_modulo_3.Restauranteapi.entity.TipoStatus;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.service.ProdutoService;
 import io.swagger.annotations.ApiOperation;

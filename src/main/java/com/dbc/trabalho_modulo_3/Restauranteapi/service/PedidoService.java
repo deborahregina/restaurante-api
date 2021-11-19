@@ -73,14 +73,22 @@ public class PedidoService {
     }
 
 
+//    public void delete(Integer idPedido) throws RegraDeNegocioException {
+//        PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pedido não encontrado!"));
+//
+//        for (PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
+//            pedidoProdutoRepository.delete(pedidoProduto);
+//        }
+//
+//        pedidoRepository.delete(pedidoEntity);
+//    }
+
     public void delete(Integer idPedido) throws RegraDeNegocioException {
         PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pedido não encontrado!"));
 
-        for (PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
-            pedidoProdutoRepository.delete(pedidoProduto);
-        }
+        pedidoEntity.setStatus(TipoStatus.ARQUIVADO);
 
-        pedidoRepository.delete(pedidoEntity);
+        pedidoRepository.save(pedidoEntity);
     }
 
 
@@ -89,7 +97,7 @@ public class PedidoService {
         List<PedidoDTO> pedidoDTOList = new ArrayList<>();
 
         if (idPedido == null) {
-            List<PedidoEntity> listaPedidoEntities = pedidoRepository.findAll();
+            List<PedidoEntity> listaPedidoEntities = pedidoRepository.findPedidosByStatus(TipoStatus.ABERTO);
 
             for (PedidoEntity pedidoEntity : listaPedidoEntities) {
 

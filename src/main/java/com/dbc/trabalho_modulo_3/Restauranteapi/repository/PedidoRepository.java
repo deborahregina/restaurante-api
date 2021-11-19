@@ -21,4 +21,7 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Integer> {
             "where status = :status ")
     Page<PedidoEntity> findByStatus(TipoStatus status, Pageable pageable);
 
+    @Query("select p" + " from PEDIDO p " + " where status = :status")
+    List<PedidoEntity> findPedidosByStatus(TipoStatus status);
+
 }

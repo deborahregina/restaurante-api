@@ -31,13 +31,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/auth/**").permitAll()
+                .antMatchers("/auth").permitAll()
 
-                .antMatchers(HttpMethod.POST,"/auth/create/").hasRole("ADMIN") // CREATE - ADMIN
-                .antMatchers(HttpMethod.GET,"/produto/").hasRole("ATENDIMENTO")
-                .antMatchers(HttpMethod.GET,"/cliente/**", "/contato/**", "/endereco/**", "/pedido/**").hasRole("MARKETING")
-                .antMatchers(HttpMethod.GET,"/**").hasRole("USUARIO") //ROLE_USUARIO
+                .antMatchers("/auth/create/").hasRole("ADMIN") // CREATE - ADMIN
+//                .antMatchers(HttpMethod.GET,"/produto/").hasRole("ATENDIMENTO")
+//                .antMatchers(HttpMethod.GET,"/cliente/**", "/contato/**", "/endereco/**", "/pedido/**").hasRole("MARKETING")
                 .antMatchers("/produto/**").hasRole("MARKETING")
+                .antMatchers(HttpMethod.GET,"/**").hasAnyRole("USUARIO", "MARKETING", "ATENDIMENTO", "ADMIN") //ROLE_USUARIO
+
                 .antMatchers("/cliente/**", "/contato/**", "/endereco/**", "/pedido/**").hasRole("ATENDIMENTO")
                 .antMatchers("/**").hasRole("ADMIN") //ROLE_ADMIN -TODAS APLICAÇÕES
 

@@ -33,18 +33,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/auth").permitAll()
 
-                .antMatchers("/auth/create/").hasRole("ADMIN") // CREATE - ADMIN
-//                .antMatchers(HttpMethod.GET,"/produto/").hasRole("ATENDIMENTO")
-//                .antMatchers(HttpMethod.GET,"/cliente/**", "/contato/**", "/endereco/**", "/pedido/**").hasRole("MARKETING")
-                .antMatchers(HttpMethod.GET,"/**").hasAnyRole("USUARIO", "MARKETING", "ATENDIMENTO", "ADMIN") //ROLE_USUARIO
-
+                .antMatchers("/auth/create/").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/**").hasAnyRole("USUARIO", "MARKETING", "ATENDIMENTO", "ADMIN")
                 .antMatchers("/cliente/**", "/contato/**", "/endereco/**", "/pedido/**").hasRole("ATENDIMENTO")
                 .antMatchers("/produto/**").hasRole("MARKETING")
                 .antMatchers("/**").hasRole("ADMIN") //ROLE_ADMIN -TODAS APLICAÇÕES
 
                 .anyRequest().authenticated()
 
-                //filtro de autenticação...
                 .and().addFilterBefore(new TokenAuthenticationFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
     }
 

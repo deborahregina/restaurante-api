@@ -15,14 +15,6 @@ import java.util.stream.Collectors;
 @Repository
 public interface  ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
 
-    @Query(value = "select * " +
-            "         from CLIENTE" +
-            "        where upper(nome) like upper(:nome)",
-            countQuery = "select count(*) " +
-                    "         from CLIENTE" +
-                    "        where upper(nome) like upper(:nome)",
-            nativeQuery = true)
-    Page<ClienteEntity> findByNomeNativo(String nome, Pageable pageable);
 
 }
 

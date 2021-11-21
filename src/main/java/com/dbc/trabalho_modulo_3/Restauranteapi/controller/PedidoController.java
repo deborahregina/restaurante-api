@@ -77,17 +77,6 @@ public class PedidoController {
     }
 
 
-/*    @GetMapping("/lista-pedidos-ordenados-data")
-    public Page<PedidoDTO> findAllByData(
-            @RequestParam Integer pagina,
-            @RequestParam Integer quantidadeDeRegistrosPorPagina){
-        Pageable pageable = PageRequest.of(pagina,
-                quantidadeDeRegistrosPorPagina,
-                Sort.by("data"));
-        Page<PedidoDTO> paginaDoBanco = pedidoService.findAll(pageable);
-        return paginaDoBanco;
-    }*/
-
     @GetMapping("/lista-por-Status")
     @ApiOperation(value = "Lista todos pedidos (opcional filtro por status) por ordem cronológica")
     public Page<PedidoDTO> findByStatus(

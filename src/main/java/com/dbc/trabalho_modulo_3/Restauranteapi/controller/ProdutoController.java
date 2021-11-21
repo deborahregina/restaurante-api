@@ -56,7 +56,7 @@ public class ProdutoController {
 
 
     @GetMapping("/idProduto")
-    @ApiOperation(value = "Lista os clientes pelo id do cliente")
+    @ApiOperation(value = "Lista os produtos pelo id do produto")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Produtos listados com sucesso"),
             @ApiResponse(code = 500, message = "Foi gerada uma exceção no sistema")
@@ -75,6 +75,7 @@ public class ProdutoController {
     public void delete(@PathVariable("idProduto") Integer idProduto) throws Exception {
         produtoService.delete(idProduto);
     }
+
     @GetMapping("/lista-por-tipoProduto")
     @ApiOperation(value = "Lista por tipo de produto")
     public Page<ProdutoDTO> findByTipoProduto(

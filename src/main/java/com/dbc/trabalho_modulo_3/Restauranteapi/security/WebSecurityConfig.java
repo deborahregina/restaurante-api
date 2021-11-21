@@ -36,10 +36,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/create/").hasRole("ADMIN") // CREATE - ADMIN
 //                .antMatchers(HttpMethod.GET,"/produto/").hasRole("ATENDIMENTO")
 //                .antMatchers(HttpMethod.GET,"/cliente/**", "/contato/**", "/endereco/**", "/pedido/**").hasRole("MARKETING")
-                .antMatchers("/produto/**").hasRole("MARKETING")
                 .antMatchers(HttpMethod.GET,"/**").hasAnyRole("USUARIO", "MARKETING", "ATENDIMENTO", "ADMIN") //ROLE_USUARIO
 
                 .antMatchers("/cliente/**", "/contato/**", "/endereco/**", "/pedido/**").hasRole("ATENDIMENTO")
+                .antMatchers("/produto/**").hasRole("MARKETING")
                 .antMatchers("/**").hasRole("ADMIN") //ROLE_ADMIN -TODAS APLICAÇÕES
 
                 .anyRequest().authenticated()

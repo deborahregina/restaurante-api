@@ -13,7 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Repository
-public interface  ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
+public interface ClienteRepository extends JpaRepository<ClienteEntity, Integer> {
 
 
 }

@@ -14,39 +14,34 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+
 import java.util.List;
 
 @RequestMapping("/funcionarios")
 @RestController
 @RequiredArgsConstructor
 public class FuncionarioController {
-    private final FuncionarioRepository funcionarioService;
+    private final FuncionarioService funcionarioService;
 
     @GetMapping
-    public ResponseEntity<?> list() throws RegraDeNegocioException {
-        List<FuncionarioEntity> list = funcionarioService.findAll();
-        return ResponseEntity.ok(list);
+    public List<FuncionarioEntity> list() throws RegraDeNegocioException {
+        return funcionarioService.findAll();
     }
 
-//    @PostMapping
-//    public ResponseEntity<FuncionarioEntity> save(@RequestBody FuncionarioEntity funcionarioEntity){
-//        FuncionarioEntity funcionarioNovo = funcionarioService.save(funcionarioEntity);
-//        return funcionarioNovo;
-//    }
-//
-//    @GetMapping(path="/{cnpj}")
-//    public ResponseEntity<Cliente> view(@PathVariable String cnpj){
-//
-//        Cliente cliente = repository.findOne(cnpj);
-//
-//        if(Objects.isNull(cliente)){
-//
-//            return ResponseEntity.noContent().build();
-//        }
-//        else{
-//            return ResponseEntity.ok(cliente);
-//        }
-//    }
+    @PostMapping
+    public FuncionarioEntity save(@RequestBody FuncionarioEntity funcionarioEntity){
+        return funcionarioService.save(funcionarioEntity);
+    }
+
+    @PutMapping("/idFuncionario")
+    public FuncionarioEntity update(@RequestParam("idFuncionario") String idFuncionario
+            ,@RequestBody FuncionarioEntity funcionarioEntity) throws RegraDeNegocioException {
+        return funcionarioService.update(idFuncionario,funcionarioEntity);
+    }
+
+    @DeleteMapping("/idFuncionario")
+    public void delete(@RequestParam("idFuncionario") String idFuncionario) throws RegraDeNegocioException {
+        funcionarioService.delete(idFuncionario);
+    }
 
 }

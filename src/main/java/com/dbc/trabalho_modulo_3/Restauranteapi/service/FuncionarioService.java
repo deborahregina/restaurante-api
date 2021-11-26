@@ -1,6 +1,7 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.FuncionarioEntity;
+import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.FuncionarioRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,20 +17,24 @@ public class FuncionarioService {
         return funcionarioRepository.save(funcionarioEntity);
     }
 
+    public FuncionarioEntity update(String idFuncionario, FuncionarioEntity funcionarioEntity) throws RegraDeNegocioException {
+        findById(idFuncionario);
+        funcionarioEntity.setId(idFuncionario);
+        return funcionarioRepository.save(funcionarioEntity);
+    }
+
     public List<FuncionarioEntity> findAll() {
         return funcionarioRepository.findAll();
     }
-//
-//    public long count() {
-//        return arquivoRepository.count();
-//    }
-//
-//    public Arquivo findById(String id) {
-//        return arquivoRepository.findOne(id);
-//    }
-//
-//    public void delete(String id) {
-//        arquivoRepository.delete(id);
-//    }
+
+    public void delete(String id) throws RegraDeNegocioException {
+        findById(id);
+        funcionarioRepository.deleteById(id);
+    }
+
+    private FuncionarioEntity findById(String id) throws RegraDeNegocioException {
+        return funcionarioRepository.findById(id)
+                .orElseThrow(() -> new RegraDeNegocioException("Id não existe!"));
+    }
 
 }

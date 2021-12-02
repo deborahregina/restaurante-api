@@ -4,6 +4,7 @@ package com.dbc.trabalho_modulo_3.Restauranteapi.service;
 import com.dbc.trabalho_modulo_3.Restauranteapi.dto.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.entity.*;
 import com.dbc.trabalho_modulo_3.Restauranteapi.exception.RegraDeNegocioException;
+import com.dbc.trabalho_modulo_3.Restauranteapi.kafka.Producer;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.ClienteRepository;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoProdutoRepository;
 import com.dbc.trabalho_modulo_3.Restauranteapi.repository.PedidoRepository;
@@ -18,7 +19,10 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
@@ -33,8 +37,11 @@ public class PedidoService {
     private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
     private final PedidoProdutoRepository pedidoProdutoRepository;
+    private final Producer producer;
 
     public PedidoDTO create(Integer idCliente, PedidoCreateDTO pedidoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
+
+        NumberFormat formatter = new DecimalFormat("#0.00");
 
         for (PedidoProdutoDTO pedidoProduto : pedidoCreateDTO.getPedidoProduto()) {
             produtoService.getById(pedidoProduto.getIdProduto());
@@ -67,21 +74,29 @@ public class PedidoService {
 
         pedidoCriado = pedidoRepository.save(pedidoEntity);
 
-        emailService.enviarEmailComTemplate(pedidoCriado, cliente);
+        DateTimeFormatter formatData = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String produtosDoPedido = "";
+
+        String mensagemCompleta = "Data do pedido: " + pedidoEntity.getData().format(formatData) + "<br>";
+        for(PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
+            ProdutoEntity produto = pedidoProduto.getProdutoEntity();
+            produtosDoPedido += "<br>"+pedidoProduto.getQuantidade()+ "x "+ produto.getDescricao() + ":                                            " +
+                    "    R$ " + formatter.format(produto.getValorUnitario().multiply(BigDecimal.valueOf(pedidoProduto.getQuantidade())));
+        }
+
+        mensagemCompleta += produtosDoPedido + "<br>" + "Valor total: R$ " + pedidoEntity.getValorTotal();
+
+        EmailDTO emailDTO = new EmailDTO();
+        emailDTO.setAssunto("Novo Pedido Realizado");
+        emailDTO.setDestinatario(cliente.getEmail());
+        emailDTO.setMensagem(mensagemCompleta);
+        emailDTO.setNomeCliente(cliente.getNome());
+        producer.sendMessageNovoPedido(emailDTO);
 
         return fromEntity(pedidoCriado);
     }
 
 
-//    public void delete(Integer idPedido) throws RegraDeNegocioException {
-//        PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pedido não encontrado!"));
-//
-//        for (PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
-//            pedidoProdutoRepository.delete(pedidoProduto);
-//        }
-//
-//        pedidoRepository.delete(pedidoEntity);
-//    }
 
     public void delete(Integer idPedido) throws RegraDeNegocioException {
         PedidoEntity pedidoEntity = pedidoRepository.findById(idPedido).orElseThrow(() -> new RegraDeNegocioException("Pedido não encontrado!"));

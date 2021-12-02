@@ -20,4 +20,6 @@ public interface ProdutoRepository  extends JpaRepository<ProdutoEntity,Integer>
             "where tipoProduto = :tipoProduto ")
     Page<ProdutoEntity> findByTipoProduto(TipoProduto tipoProduto, Pageable pageable);
 
+    @Query(value = "select * from produto p where p.valor_unitario < 50 ", nativeQuery = true)
+    List<ProdutoEntity> buscaPromocao();
 }

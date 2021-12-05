@@ -16,6 +16,10 @@ import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 @Component
@@ -25,14 +29,17 @@ public class ScheduleEnvioPromocional {
 
     private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
-    NumberFormat formatter = new DecimalFormat("#0.00");
     private final Producer producer;
 
-    //@Scheduled(cron = "0 0 18 * * FRI")
+    NumberFormat formatter = new DecimalFormat("#0.00");
+    DateTimeFormatter formatData = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
     @Scheduled(fixedDelay = 60000)
+//    @Scheduled(cron = "0 0 18 * * FRI")
     public void enviaKafkaPromocao() throws JsonProcessingException {
         List<ClienteEntity> listaClientes = clienteRepository.findAll();
         List<ProdutoEntity> listaPromocoes = produtoRepository.buscaPromocao();
+        LocalDateTime dataPedido = LocalDateTime.now();
 
         String mensagemCompleta = "Promoções para você aproveitar o final de semana: \n";
         String promocoes = "";
@@ -47,6 +54,7 @@ public class ScheduleEnvioPromocional {
             emailDTO.setDestinatario(cliente.getEmail());
             emailDTO.setMensagem(mensagemCompleta);
             emailDTO.setAssunto("Promoções do final de semana");
+            emailDTO.setData(dataPedido.format(formatData));
             producer.sendMessagePromocoes(emailDTO);
 
         }

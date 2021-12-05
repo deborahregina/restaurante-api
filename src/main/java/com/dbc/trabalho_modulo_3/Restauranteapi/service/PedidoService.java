@@ -33,11 +33,12 @@ public class PedidoService {
     private final PedidoRepository pedidoRepository;
     private final ObjectMapper objectMapper;
     private final ProdutoService produtoService;
-    private final EmailService emailService;
     private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
     private final PedidoProdutoRepository pedidoProdutoRepository;
     private final Producer producer;
+
+
 
     public PedidoDTO create(Integer idCliente, PedidoCreateDTO pedidoCreateDTO) throws RegraDeNegocioException, MessagingException, TemplateException, IOException {
 
@@ -77,7 +78,7 @@ public class PedidoService {
         DateTimeFormatter formatData = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         String produtosDoPedido = "";
 
-        String mensagemCompleta = "Data do pedido: " + pedidoEntity.getData().format(formatData) + "<br>";
+        String mensagemCompleta = "Aqui está seu pedido <br>";
         for(PedidoProdutoEntity pedidoProduto : pedidoEntity.getProdutosDoPedido()) {
             ProdutoEntity produto = pedidoProduto.getProdutoEntity();
             produtosDoPedido += "<br>"+pedidoProduto.getQuantidade()+ "x "+ produto.getDescricao() + ":                                            " +
@@ -91,6 +92,7 @@ public class PedidoService {
         emailDTO.setDestinatario(cliente.getEmail());
         emailDTO.setMensagem(mensagemCompleta);
         emailDTO.setNomeCliente(cliente.getNome());
+        emailDTO.setData(dataPedido.format(formatData));
         producer.sendMessageNovoPedido(emailDTO);
 
         return fromEntity(pedidoCriado);

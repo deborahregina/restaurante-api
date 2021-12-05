@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -23,5 +25,9 @@ public interface PedidoRepository extends JpaRepository<PedidoEntity, Integer> {
 
     @Query("select p" + " from PEDIDO p " + " where status = :status")
     List<PedidoEntity> findPedidosByStatus(TipoStatus status);
+
+    //SELECT sum(p.valor_total) FROM pedido p WHERE CAST(p.data_pedido AS DATE) = '2021-12-02'
+    @Query(value = "SELECT sum(p.valor_total) FROM pedido p WHERE CAST(p.data_pedido AS DATE) = cast(current_date as DATE)", nativeQuery = true)
+    BigDecimal somaDosPedidos();
 
 }

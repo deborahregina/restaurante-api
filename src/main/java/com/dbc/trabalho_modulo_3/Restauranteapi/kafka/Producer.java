@@ -1,6 +1,7 @@
 package com.dbc.trabalho_modulo_3.Restauranteapi.kafka;
 
 
+import com.dbc.trabalho_modulo_3.Restauranteapi.dto.CaixaDTO;
 import com.dbc.trabalho_modulo_3.Restauranteapi.dto.EmailDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,11 +28,11 @@ public class Producer {
     private final KafkaTemplate<String, String> stringKafkaTemplate;
     private final ObjectMapper objectMapper;
 
-    @Value(value = "${kafka.topic.promocao}")
-    private String topicoPromocao;
+    @Value(value = "${kafka.topic.email}")
+    private String topicoEmail;
 
-    @Value(value = "${kafka.topic.pedidorealizado}")
-    private String topicoPedidoRealizado;
+    @Value(value = "${kafka.topic.caixa}")
+    private String topicoCaixa;
 
     private void send(String mensagem, String topico) {
         Message<String> message = MessageBuilder.withPayload(mensagem)
@@ -59,12 +60,17 @@ public class Producer {
 
     public void sendMessagePromocoes(EmailDTO emailDTO) throws JsonProcessingException {
             String payload = objectMapper.writeValueAsString(emailDTO);
-            send(payload, topicoPromocao);
+            send(payload, topicoEmail);
         }
 
     public void sendMessageNovoPedido(EmailDTO emailDTO) throws JsonProcessingException {
         String payload = objectMapper.writeValueAsString(emailDTO);
-        send(payload, topicoPedidoRealizado);
+        send(payload, topicoEmail);
+    }
+
+    public void sendMessageSomaPedidos(CaixaDTO caixaDTO) throws JsonProcessingException {
+        String payload = objectMapper.writeValueAsString(caixaDTO);
+        send(payload, topicoCaixa);
     }
 
 }

@@ -34,8 +34,8 @@ public class ScheduleEnvioPromocional {
     NumberFormat formatter = new DecimalFormat("#0.00");
     DateTimeFormatter formatData = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    @Scheduled(fixedDelay = 60000)
-//    @Scheduled(cron = "0 0 18 * * FRI")
+    //@Scheduled(fixedDelay = 60000)
+    @Scheduled(cron = "0 0 18 * * FRI")
     public void enviaKafkaPromocao() throws JsonProcessingException {
         List<ClienteEntity> listaClientes = clienteRepository.findAll();
         List<ProdutoEntity> listaPromocoes = produtoRepository.buscaPromocao();
